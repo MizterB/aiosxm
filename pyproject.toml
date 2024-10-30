@@ -1,0 +1,15 @@
+[project]
+name = "aiosxm"
+version = "0.1.0"
+description = "An asynchronous Python library for SiriusXM"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp>=3.10.10",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+[tool.ruff]
+line-length = 120
