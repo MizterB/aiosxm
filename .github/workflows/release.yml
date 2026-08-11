@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       test_pypi:
-        description: "Publish to TestPyPI instead of PyPI"
+        description: "Publish to TestPyPI instead of PyPI (needs a TestPyPI trusted publisher)"
         type: boolean
-        default: true
+        default: false
 
 jobs:
   build:
@@ -57,12 +57,14 @@ jobs:
           name: dist
           path: dist/
 
+      # A published release always goes to PyPI; only a manual run with the flag
+      # set goes to TestPyPI, which needs its own trusted publisher registered.
       - name: Publish to TestPyPI
-        if: inputs.test_pypi
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.test_pypi }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
       - name: Publish to PyPI
-        if: ${{ !inputs.test_pypi }}
+        if: ${{ github.event_name == 'release' || !inputs.test_pypi }}
         uses: pypa/gh-action-pypi-publish@release/v1
