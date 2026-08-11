@@ -12,5 +12,15 @@ wheels/
 # Environment variables
 .env
 
+# Local API captures / scratch output
+*.local.json
+
+# Tool caches and test artifacts
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+
 # Miscellaneous
 .DS_Store

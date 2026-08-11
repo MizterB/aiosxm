@@ -7,20 +7,33 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
             "justMyCode": false
         },
         {
-            "name": "SiriusXM Proxy Server",
+            "name": "SiriusXM proxy",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/aiosxm/proxy.py",
+            "module": "aiosxm",
+            "args": ["--verbose"],
             "console": "integratedTerminal",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
+            "justMyCode": false
+        },
+        {
+            "name": "Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["-q"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Tests (live API)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["--live", "-q"],
+            "console": "integratedTerminal",
             "justMyCode": false
         }
     ]

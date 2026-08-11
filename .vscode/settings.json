@@ -1,4 +1,16 @@
 {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    // Open links in the system browser rather than the built-in Simple Browser,
+    // whose embedded webview can't play the proxy's HLS streams.
+    "workbench.externalBrowser": "default",
+    "remote.autoForwardPortsSource": "hybrid",
+    "remote.portsAttributes": {
+        "8080": {
+            "label": "aiosxm proxy",
+            "onAutoForward": "openBrowser"
+        }
+    }
 }
