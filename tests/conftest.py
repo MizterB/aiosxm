@@ -116,9 +116,7 @@ def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line("markers", "live: hits the real SiriusXM API")
 
 
-def pytest_collection_modifyitems(
-    config: pytest.Config, items: list[pytest.Item]
-) -> None:
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     """Skip live tests unless --live is passed and credentials are available.
 
     Two gates on purpose: --live keeps them out of CI and out of an ordinary

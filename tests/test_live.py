@@ -62,9 +62,7 @@ class TestLiveChannels:
         assert len(channels) > 100, f"only {len(channels)} channels — has the API moved?"
         assert all(isinstance(c, Channel) for c in channels)
 
-    async def test_channels_have_the_fields_consumers_need(
-        self, live_client: SxmClient
-    ) -> None:
+    async def test_channels_have_the_fields_consumers_need(self, live_client: SxmClient) -> None:
         channels = await live_client.get_channels()
         linear = [c for c in channels if c.is_linear]
         assert linear, "no linear channels"
@@ -136,9 +134,7 @@ class TestLivePlayback:
 
     async def test_xtra_channel_plays(self, live_client: SxmClient) -> None:
         channels = await live_client.get_channels()
-        channel = next(
-            (c for c in channels if c.type == "channel-xtra" and not c.unentitled), None
-        )
+        channel = next((c for c in channels if c.type == "channel-xtra" and not c.unentitled), None)
         if channel is None:
             pytest.skip("no entitled xtra channel")
         stream = await live_client.get_stream(channel.type, channel.id)
@@ -175,14 +171,8 @@ class TestLiveArtistStations:
         channels = await live_client.get_library_channels()
         stations = await live_client.get_library_artist_stations()
 
-        wanted = [
-            e
-            for e in raw
-            if str(e.get("entityType", "")).startswith(("channel", "artist-station"))
-        ]
-        assert len(channels) + len(stations) == len(wanted), (
-            "library resolution is dropping entries"
-        )
+        wanted = [e for e in raw if str(e.get("entityType", "")).startswith(("channel", "artist-station"))]
+        assert len(channels) + len(stations) == len(wanted), "library resolution is dropping entries"
 
     async def test_stations_hydrate(self, live_client: SxmClient) -> None:
         stations = await live_client.get_library_artist_stations()
@@ -258,15 +248,11 @@ class TestLiveSports:
 class TestLiveArtistStationSearch:
     """Artist stations are discoverable beyond the library."""
 
-    async def test_search_finds_stations_outside_the_library(
-        self, live_client: SxmClient
-    ) -> None:
+    async def test_search_finds_stations_outside_the_library(self, live_client: SxmClient) -> None:
         library = {s.id for s in await live_client.get_library_artist_stations()}
         found = await live_client.search_artist_stations("Frank Sinatra")
         assert found, "no artist stations matched"
-        assert any(s.id not in library for s in found), (
-            "search returned nothing beyond the library"
-        )
+        assert any(s.id not in library for s in found), "search returned nothing beyond the library"
         assert all(s.title for s in found)
 
     async def test_a_searched_station_plays(self, live_client: SxmClient) -> None:

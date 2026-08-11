@@ -39,9 +39,7 @@ class TestChannel:
 
     def test_accepts_typed_wrapper_shape(self) -> None:
         # The container endpoint wraps entities as `channelLinear` rather than `entity`.
-        channel = Channel.from_item(
-            {"channelLinear": {"id": "abc", "type": "channel-linear", "texts": {}}}
-        )
+        channel = Channel.from_item({"channelLinear": {"id": "abc", "type": "channel-linear", "texts": {}}})
         assert channel is not None
         assert channel.id == "abc"
 
@@ -149,9 +147,7 @@ class TestImageUrls:
         payload = json.loads(base64.b64decode(build_image_url("a.jpg", 1, 1).rsplit("/", 1)[-1]))
         assert len(payload["edits"]) == 1
 
-        payload = json.loads(
-            base64.b64decode(build_image_url("a.jpg", 1, 1, "webp").rsplit("/", 1)[-1])
-        )
+        payload = json.loads(base64.b64decode(build_image_url("a.jpg", 1, 1, "webp").rsplit("/", 1)[-1]))
         assert payload["edits"][1] == {"format": {"type": "webp"}}
 
     def test_size_is_requestable(self) -> None:
@@ -169,10 +165,7 @@ class TestNowPlaying:
     """The lookaround feed carries cuts (tracks) and shows (programmes)."""
 
     def test_parses_real_feed(self, lookaround: dict) -> None:
-        parsed = {
-            cid: NowPlaying.from_feed_entry(cid, entry)
-            for cid, entry in lookaround["channels"].items()
-        }
+        parsed = {cid: NowPlaying.from_feed_entry(cid, entry) for cid, entry in lookaround["channels"].items()}
         assert any(v is not None for v in parsed.values())
 
     def test_latest_cut_wins(self) -> None:
@@ -190,16 +183,12 @@ class TestNowPlaying:
         assert current.artist == "B"
 
     def test_ads_are_flagged(self) -> None:
-        current = NowPlaying.from_feed_entry(
-            "chan", {"cuts": [{"name": "Buy things", "isAd": True}]}
-        )
+        current = NowPlaying.from_feed_entry("chan", {"cuts": [{"name": "Buy things", "isAd": True}]})
         assert current is not None
         assert current.is_ad is True
 
     def test_show_without_cuts(self) -> None:
-        current = NowPlaying.from_feed_entry(
-            "chan", {"cuts": [], "shows": [{"name": "Morning Show"}]}
-        )
+        current = NowPlaying.from_feed_entry("chan", {"cuts": [], "shows": [{"name": "Morning Show"}]})
         assert current is not None
         assert current.show == "Morning Show"
         assert current.title is None

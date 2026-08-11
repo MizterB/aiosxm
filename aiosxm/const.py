@@ -21,9 +21,7 @@ REFRESH_TOKEN_COOKIE = "sxm-refresh-token"  # noqa: S105  (a cookie name, not a 
 
 # Live now-playing metadata for every channel, published as a single cached feed.
 # It needs no authentication, which is why it can be polled cheaply.
-LOOKAROUND_URL = (
-    "https://lookaround-cache-prod.streaming.siriusxm.com/playbackservices/v1/live/lookAround"
-)
+LOOKAROUND_URL = "https://lookaround-cache-prod.streaming.siriusxm.com/playbackservices/v1/live/lookAround"
 
 # The "All channels" curated grouping. Both ids come from the page descriptor at
 # page/v1/page/curated-grouping/{ALL_CHANNELS_ENTITY_ID}, which is what the web

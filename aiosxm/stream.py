@@ -41,8 +41,12 @@ def trim_to_live_window(playlist: str, segments: int) -> str:
     keep_from = indices[-segments]
     # Walk back over the tags attached to that segment (#EXTINF, #EXT-X-KEY, ...).
     start = keep_from
-    while start > 0 and lines[start - 1].startswith("#EXT") and not lines[start - 1].startswith(
-        ("#EXTM3U", "#EXT-X-VERSION", "#EXT-X-TARGETDURATION", "#EXT-X-MEDIA-SEQUENCE")
+    while (
+        start > 0
+        and lines[start - 1].startswith("#EXT")
+        and not lines[start - 1].startswith(
+            ("#EXTM3U", "#EXT-X-VERSION", "#EXT-X-TARGETDURATION", "#EXT-X-MEDIA-SEQUENCE")
+        )
     ):
         start -= 1
 
@@ -59,8 +63,9 @@ def trim_to_live_window(playlist: str, segments: int) -> str:
             # Keys apply to every following segment, so the one in force at the
             # cut point has to be carried over or nothing decrypts.
             active_key = line
-        elif line.startswith(("#EXTM3U", "#EXT-X-VERSION", "#EXT-X-TARGETDURATION",
-                              "#EXT-X-ALLOW-CACHE", "#EXT-X-PLAYLIST-TYPE")):
+        elif line.startswith(
+            ("#EXTM3U", "#EXT-X-VERSION", "#EXT-X-TARGETDURATION", "#EXT-X-ALLOW-CACHE", "#EXT-X-PLAYLIST-TYPE")
+        ):
             header.append(line)
 
     if active_key and not any(ln.startswith("#EXT-X-KEY") for ln in lines[start:]):
@@ -229,10 +234,7 @@ class SxmStream:
     def content_url(self) -> str:
         """The direct media URL for a progressive (non-HLS) stream."""
         if not self.is_progressive:
-            message = (
-                f"{self.entity_type}/{self.entity_id} is an HLS stream; "
-                "use get_playlist() instead"
-            )
+            message = f"{self.entity_type}/{self.entity_id} is an HLS stream; use get_playlist() instead"
             raise ValueError(message)
         return self.master_playlist_url
 
@@ -271,10 +273,7 @@ class SxmStream:
     def _source(self) -> dict:
         """The tuneSource payload, once the stream has been initialized."""
         if self._tune_source is None:
-            message = (
-                f"Stream {self.entity_type}/{self.entity_id} is not initialized; "
-                "await initialize() first"
-            )
+            message = f"Stream {self.entity_type}/{self.entity_id} is not initialized; await initialize() first"
             raise RuntimeError(message)
         return self._tune_source
 
@@ -305,16 +304,10 @@ class SxmStream:
         to the highest that is available.
         """
         if self.is_track_queue:
-            message = (
-                f"{self.entity_type}/{self.entity_id} is a queue of tracks, not HLS; "
-                "use tracks instead"
-            )
+            message = f"{self.entity_type}/{self.entity_id} is a queue of tracks, not HLS; use tracks instead"
             raise ValueError(message)
         if self.is_progressive:
-            message = (
-                f"{self.entity_type}/{self.entity_id} is a single media file, not HLS; "
-                "use content_url instead"
-            )
+            message = f"{self.entity_type}/{self.entity_id} is a single media file, not HLS; use content_url instead"
             raise ValueError(message)
         url = self._streams_by_bitrate.get(bitrate)
         if url:
@@ -408,11 +401,7 @@ class SxmStream:
                 lines.append(_KEY_URI_RE.sub(rf"\g<1>{key_url}\g<3>", line))
             elif line and not line.startswith("#"):
                 segment = line.strip()
-                lines.append(
-                    urljoin(variant_base, segment)
-                    if absolute_segments
-                    else segment.rsplit("/", 1)[-1]
-                )
+                lines.append(urljoin(variant_base, segment) if absolute_segments else segment.rsplit("/", 1)[-1])
             else:
                 lines.append(line)
         return "\n".join(lines) + "\n"

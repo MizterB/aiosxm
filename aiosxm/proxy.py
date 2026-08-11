@@ -52,9 +52,7 @@ MAX_QUEUE_TRACKS = 100
 LIVE_WINDOW_SEGMENTS = 20
 
 # Entity types that can be tuned directly, rather than naming another entity.
-PLAYABLE_TYPES = frozenset(
-    {"channel-linear", "channel-xtra", "artist-station", "episode-podcast", "episode-audio"}
-)
+PLAYABLE_TYPES = frozenset({"channel-linear", "channel-xtra", "artist-station", "episode-podcast", "episode-audio"})
 
 Handler = Callable[[web.Request], Awaitable[web.StreamResponse]]
 
@@ -259,9 +257,7 @@ async def get_library(request: web.Request) -> web.Response:
     # hydration failure take the whole listing down with it.
     if any(e.get("entityType") == "artist-station" for e in library):
         try:
-            items.extend(
-                _serialize_station(s) for s in await client.get_library_artist_stations()
-            )
+            items.extend(_serialize_station(s) for s in await client.get_library_artist_stations())
         except RequestError:
             _LOGGER.warning("Could not load artist stations", exc_info=True)
 
@@ -302,11 +298,7 @@ def _serialize_library_entry(entity: dict, entity_type: str) -> dict:
         "description": _clean_text(description),
         "image_url": _entity_image_url(entity),
         # Shows list their episodes; anything else browses its container page.
-        "path": (
-            f"/podcasts/{entity['id']}/episodes"
-            if is_show
-            else f"/browse/{entity_type}/{entity['id']}"
-        ),
+        "path": (f"/podcasts/{entity['id']}/episodes" if is_show else f"/browse/{entity_type}/{entity['id']}"),
         "is_show": is_show,
     }
 
@@ -377,9 +369,7 @@ async def browse_genres(request: web.Request) -> web.Response:
 async def browse_genre(request: web.Request) -> web.Response:
     """List the channels in one genre."""
     genre = unquote(request.match_info["genre"]).casefold()
-    channels = [
-        c for c in await _cached_channels(request) if (c.get("genre") or "").casefold() == genre
-    ]
+    channels = [c for c in await _cached_channels(request) if (c.get("genre") or "").casefold() == genre]
     if not channels:
         raise web.HTTPNotFound(text=f"No channels in genre {genre!r}")
     return web.json_response(channels)
@@ -413,9 +403,7 @@ def _serialize_entity(item: dict) -> dict:
         "title": (entity.get("texts", {}).get("title") or {}).get("default"),
         "air_date": decorations.get("airDate"),
         "browse_path": f"/browse/{entity_type}/{entity_id}" if entity_type else None,
-        "play_path": (
-            f"/stream/{play_type}/{play_id}/playlist.m3u8" if play_type and play_id else None
-        ),
+        "play_path": (f"/stream/{play_type}/{play_id}/playlist.m3u8" if play_type and play_id else None),
     }
 
 
@@ -532,9 +520,7 @@ async def get_team_broadcasts(request: web.Request) -> web.Response:
                 "coverage": b.coverage,
                 "playable": b.is_playable,
                 "play_path": (
-                    f"/stream/{b.play_entity_type}/{b.play_entity_id}/playlist.m3u8"
-                    if b.is_playable
-                    else None
+                    f"/stream/{b.play_entity_type}/{b.play_entity_id}/playlist.m3u8" if b.is_playable else None
                 ),
             }
             for b in broadcasts
@@ -552,11 +538,7 @@ async def get_artist_stations(request: web.Request) -> web.Response:
     """
     client = _client(request)
     query = request.query.get("q", "").strip()
-    stations = (
-        await client.search_artist_stations(query)
-        if query
-        else await client.get_library_artist_stations()
-    )
+    stations = await client.search_artist_stations(query) if query else await client.get_library_artist_stations()
     return web.json_response([_serialize_station(s) for s in stations])
 
 

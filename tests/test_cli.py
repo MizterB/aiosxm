@@ -25,9 +25,7 @@ class TestCli:
         assert "No SiriusXM credentials found" in message
         assert "SXM_USERNAME" in message
 
-    def test_credentials_from_flags_reach_the_app(
-        self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-    ) -> None:
+    def test_credentials_from_flags_reach_the_app(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         monkeypatch.delenv("SXM_USERNAME", raising=False)
         monkeypatch.delenv("SXM_PASSWORD", raising=False)
         captured: dict = {}
@@ -41,20 +39,23 @@ class TestCli:
             "sys.argv",
             [
                 "aiosxm-proxy",
-                "--env-file", str(tmp_path / "none.env"),
-                "--username", "flag@example.com",
-                "--password", "flagpass",
-                "--port", "9999",
-                "--host", "0.0.0.0",  # noqa: S104
+                "--env-file",
+                str(tmp_path / "none.env"),
+                "--username",
+                "flag@example.com",
+                "--password",
+                "flagpass",
+                "--port",
+                "9999",
+                "--host",
+                "0.0.0.0",  # noqa: S104
             ],
         )
         main()
         assert captured["kwargs"]["port"] == 9999
         assert captured["kwargs"]["host"] == "0.0.0.0"  # noqa: S104
 
-    def test_env_file_supplies_credentials(
-        self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-    ) -> None:
+    def test_env_file_supplies_credentials(self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
         monkeypatch.delenv("SXM_USERNAME", raising=False)
         monkeypatch.delenv("SXM_PASSWORD", raising=False)
         env = tmp_path / ".env"

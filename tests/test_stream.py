@@ -94,9 +94,7 @@ class TestSegmentBitrate:
         assert stream.bitrate_for_segment("mystery.aac") == BITRATE_256
         assert stream.bitrate_for_segment("mystery.aac", default="64k") == "64k"
 
-    async def test_segment_fetched_from_matching_variant_directory(
-        self, stream: SxmStream
-    ) -> None:
+    async def test_segment_fetched_from_matching_variant_directory(self, stream: SxmStream) -> None:
         # A 64k segment must come from the 64k directory, not the 256k one.
         with aioresponses() as mocked:
             mocked.get(
@@ -215,9 +213,7 @@ class TestProgressiveStreams:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            mocked.post(
-                f"{API_BASE}/playback/play/v1/tuneSource", payload=PROGRESSIVE_TUNE
-            )
+            mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=PROGRESSIVE_TUNE)
             # No master playlist is fetched for a progressive stream; if the code
             # tried, aioresponses would raise a connection error here.
             stream = await client.get_stream("episode-podcast", "ep-1")
@@ -290,9 +286,7 @@ ARTIST_TUNE = {
         {
             "id": "trk-2",
             "urls": [{"url": "https://cdn.example.com/a/pri-1/audio/2/B_64000.mp4"}],
-            "metadata": {
-                "artist": {"items": [{"id": "trk-2", "name": "L-O-V-E", "artistName": "Nat King Cole"}]}
-            },
+            "metadata": {"artist": {"items": [{"id": "trk-2", "name": "L-O-V-E", "artistName": "Nat King Cole"}]}},
         },
     ],
 }
@@ -359,9 +353,7 @@ class TestMultiStreamChannels:
         # broadcast; treating them as a queue broke bitrate discovery.
         mirrored = {
             "type": "channel-xtra",
-            "streams": [
-                {"id": f"s{i}", "urls": [{"url": MASTER_URL}]} for i in range(3)
-            ],
+            "streams": [{"id": f"s{i}", "urls": [{"url": MASTER_URL}]} for i in range(3)],
         }
         client = SxmClient("u", "p")
         with aioresponses() as mocked:
@@ -384,9 +376,7 @@ def _artist_page(prefix: str, token: str | None) -> dict:
             {
                 "id": f"{prefix}-{n}",
                 "urls": [{"url": f"https://cdn.example.com/{prefix}{n}.mp4", "isPrimary": True}],
-                "metadata": {
-                    "artist": {"items": [{"id": f"{prefix}-{n}", "name": f"Track {prefix}{n}"}]}
-                },
+                "metadata": {"artist": {"items": [{"id": f"{prefix}-{n}", "name": f"Track {prefix}{n}"}]}},
             }
             for n in range(3)
         ],
@@ -410,9 +400,7 @@ class TestEndlessQueue:
         return client, stream
 
     async def test_next_tracks_advances(self) -> None:
-        client, stream = await self._station(
-            [_artist_page("a", "tok-1"), _artist_page("b", "tok-2")]
-        )
+        client, stream = await self._station([_artist_page("a", "tok-1"), _artist_page("b", "tok-2")])
         assert [t.id for t in stream.tracks] == ["a-0", "a-1", "a-2"]
         with aioresponses() as mocked:
             mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=_artist_page("b", "t2"))
@@ -439,9 +427,7 @@ class TestEndlessQueue:
         client, stream = await self._station([_artist_page("a", "tok-1")])
         with aioresponses() as mocked:
             for _ in range(3):
-                mocked.post(
-                    f"{API_BASE}/playback/play/v1/tuneSource", payload=_artist_page("a", "tok-1")
-                )
+                mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=_artist_page("a", "tok-1"))
             got = [t.id async for t in stream.iter_tracks(limit=50)]
         assert got == ["a-0", "a-1", "a-2"]
         await client.close()
@@ -502,14 +488,19 @@ class TestNonBitrateVariants:
         await client.close()
 
 
-LONG_MEDIA = "\n".join([
-    "#EXTM3U",
-    "#EXT-X-VERSION:3",
-    "#EXT-X-TARGETDURATION:10",
-    "#EXT-X-MEDIA-SEQUENCE:100",
-    '#EXT-X-KEY:METHOD=AES-128,URI="https://api.example.com/playback/key/v1/abc"',
-    *[f"#EXTINF:10.0,\nchan_256k_1_000_{100 + n:05d}_v3.aac" for n in range(50)],
-]) + "\n"
+LONG_MEDIA = (
+    "\n".join(
+        [
+            "#EXTM3U",
+            "#EXT-X-VERSION:3",
+            "#EXT-X-TARGETDURATION:10",
+            "#EXT-X-MEDIA-SEQUENCE:100",
+            '#EXT-X-KEY:METHOD=AES-128,URI="https://api.example.com/playback/key/v1/abc"',
+            *[f"#EXTINF:10.0,\nchan_256k_1_000_{100 + n:05d}_v3.aac" for n in range(50)],
+        ]
+    )
+    + "\n"
+)
 
 
 class TestLiveWindow:
@@ -603,9 +594,7 @@ class TestSignedUrlExpiry:
             mock_auth(mocked)
             await client.connect()
             mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=SIGNED_TUNE)
-            mocked.get(
-                re.compile(r".*master\.m3u8"), body=MASTER, content_type="application/x-mpegurl"
-            )
+            mocked.get(re.compile(r".*master\.m3u8"), body=MASTER, content_type="application/x-mpegurl")
             stream = await client.get_stream("channel-linear", "abc")
 
             monkeypatch.setattr("aiosxm.stream.time.time", lambda: 1700086400.0)

@@ -156,9 +156,7 @@ class TestPlaylistRoute:
 class TestJsonRoutes:
     """Channel, library, entitlement and now-playing endpoints."""
 
-    async def test_channels_are_serialized_with_image_urls(
-        self, proxy_client, channel_item: dict
-    ) -> None:
+    async def test_channels_are_serialized_with_image_urls(self, proxy_client, channel_item: dict) -> None:
         http, _ = proxy_client
         with aioresponses(passthrough=PASSTHROUGH) as mocked:
             mocked.get(
@@ -295,11 +293,7 @@ class TestLibraryRoute:
         with aioresponses(passthrough=PASSTHROUGH) as mocked:
             mocked.get(
                 f"{API_BASE}/ondemand/v1/library/all",
-                payload={
-                    "allDataMap": {
-                        wanted: {"entityId": wanted, "entityType": "channel-linear"}
-                    }
-                },
+                payload={"allDataMap": {wanted: {"entityId": wanted, "entityType": "channel-linear"}}},
             )
             mocked.get(CHANNELS_RE, payload={"container": {"sets": [{"items": [channel_item]}]}})
             mocked.get(CHANNELS_RE, payload={"container": {"sets": []}})
@@ -320,9 +314,7 @@ class TestSegmentRoute:
                 body=b"audio-bytes",
                 content_type="audio/aac",
             )
-            resp = await http.get(
-                "/stream/channel-linear/abc/chan_64k_1_000_00100_v3.aac"
-            )
+            resp = await http.get("/stream/channel-linear/abc/chan_64k_1_000_00100_v3.aac")
             body = await resp.read()
         assert resp.status == 200
         assert resp.content_type == "audio/aac"
@@ -372,9 +364,7 @@ class TestMissingClient:
 class TestChannelCache:
     """The cache must not stampede, and must not go stale forever."""
 
-    async def test_concurrent_requests_walk_the_catalog_once(
-        self, proxy_client, channel_item: dict
-    ) -> None:
+    async def test_concurrent_requests_walk_the_catalog_once(self, proxy_client, channel_item: dict) -> None:
         http, _ = proxy_client
         with aioresponses(passthrough=PASSTHROUGH) as mocked:
             # Only one walk's worth of responses is registered; a stampede would
@@ -513,9 +503,7 @@ class TestBrowse:
             body = await (await http.get("/browse/genres/Jazz")).json()
         assert [c["id"] for c in body] == ["jazz-1"]
 
-    async def test_genre_match_is_case_insensitive(
-        self, proxy_client, channel_item: dict
-    ) -> None:
+    async def test_genre_match_is_case_insensitive(self, proxy_client, channel_item: dict) -> None:
         http, _ = proxy_client
         other = {
             **channel_item,
@@ -603,13 +591,7 @@ class TestSportsRoutes:
         with aioresponses(passthrough=PASSTHROUGH) as mocked:
             mocked.get(
                 re.compile(r".*/page/v1/page/team/.*"),
-                payload={
-                    "page": {
-                        "containers": [
-                            {"url": "relationship/v1/container/live?entityId=t1"}
-                        ]
-                    }
-                },
+                payload={"page": {"containers": [{"url": "relationship/v1/container/live?entityId=t1"}]}},
             )
             mocked.get(
                 re.compile(r".*container/live\?.*"),
@@ -624,11 +606,7 @@ class TestSportsRoutes:
                                             "type": "episode-linear",
                                             "texts": {"title": {"default": "Play-by-Play"}},
                                         },
-                                        "actions": {
-                                            "play": [
-                                                {"entity": {"type": "channel-linear", "id": "ch1"}}
-                                            ]
-                                        },
+                                        "actions": {"play": [{"entity": {"type": "channel-linear", "id": "ch1"}}]},
                                     }
                                 ]
                             }
@@ -644,9 +622,7 @@ class TestSportsRoutes:
 class TestGenericBrowse:
     """Two routes walk the whole catalog graph."""
 
-    PAGE: ClassVar[dict] = {
-        "page": {"containers": [{"url": "relationship/v1/container/aod?entityId=x"}]}
-    }
+    PAGE: ClassVar[dict] = {"page": {"containers": [{"url": "relationship/v1/container/aod?entityId=x"}]}}
 
     async def test_entity_sections_are_listed(self, proxy_client) -> None:
         http, _ = proxy_client
@@ -699,11 +675,7 @@ class TestGenericBrowse:
                                 "items": [
                                     {
                                         "entity": {"id": "ev1", "type": "event"},
-                                        "actions": {
-                                            "play": [
-                                                {"entity": {"type": "channel-linear", "id": "ch1"}}
-                                            ]
-                                        },
+                                        "actions": {"play": [{"entity": {"type": "channel-linear", "id": "ch1"}}]},
                                     }
                                 ]
                             }

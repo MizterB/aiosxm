@@ -196,9 +196,7 @@ class SearchResults:
 
     def __bool__(self) -> bool:
         """Whether the search matched anything at all."""
-        return any(
-            (self.channels, self.shows, self.artist_stations, self.talent, self.genres)
-        )
+        return any((self.channels, self.shows, self.artist_stations, self.talent, self.genres))
 
 
 @dataclass(slots=True)

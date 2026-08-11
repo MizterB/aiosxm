@@ -25,6 +25,9 @@ jobs:
       - name: Lint
         run: uvx ruff check aiosxm tests
 
+      - name: Check formatting
+        run: uvx ruff format --check aiosxm tests
+
       - name: Type check
         run: uvx mypy aiosxm --ignore-missing-imports
 

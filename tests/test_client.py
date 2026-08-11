@@ -61,9 +61,7 @@ class TestAuthentication:
     async def test_missing_password_is_an_auth_error(self, client: SxmClient) -> None:
         with aioresponses() as mocked:
             mocked.post(f"{API_BASE}/device/v1/devices", payload={"grant": "g"})
-            mocked.post(
-                f"{API_BASE}/session/v1/sessions/anonymous", payload={"accessToken": "a"}
-            )
+            mocked.post(f"{API_BASE}/session/v1/sessions/anonymous", payload={"accessToken": "a"})
             mocked.get(
                 re.compile(rf"{re.escape(API_BASE)}/identity/v1/identities/status.*"),
                 payload={"hasPassword": False},
@@ -75,16 +73,12 @@ class TestAuthentication:
     async def test_bad_credentials_raise_auth_error(self, client: SxmClient) -> None:
         with aioresponses() as mocked:
             mocked.post(f"{API_BASE}/device/v1/devices", payload={"grant": "g"})
-            mocked.post(
-                f"{API_BASE}/session/v1/sessions/anonymous", payload={"accessToken": "a"}
-            )
+            mocked.post(f"{API_BASE}/session/v1/sessions/anonymous", payload={"accessToken": "a"})
             mocked.get(
                 re.compile(rf"{re.escape(API_BASE)}/identity/v1/identities/status.*"),
                 payload={"hasPassword": True},
             )
-            mocked.post(
-                f"{API_BASE}/identity/v1/identities/authenticate/password", status=401
-            )
+            mocked.post(f"{API_BASE}/identity/v1/identities/authenticate/password", status=401)
             with pytest.raises(AuthenticationError):
                 await client.connect()
         await client.disconnect()
@@ -171,11 +165,7 @@ class TestChannels:
         def page(items: list[dict]) -> dict:
             # `hits` deliberately lies (it echoes the requested page size), which
             # is why the walk must not trust it as a total.
-            return {
-                "container": {
-                    "sets": [{"items": items, "pagination": {"hits": 30, "offset": 0}}]
-                }
-            }
+            return {"container": {"sets": [{"items": items, "pagination": {"hits": 30, "offset": 0}}]}}
 
         def channel(n: int) -> dict:
             return {**channel_item, "entity": {**channel_item["entity"], "id": f"id-{n}"}}
@@ -191,13 +181,9 @@ class TestChannels:
         assert len(channels) == 45, "should keep paging past a full first page"
         await client.disconnect()
 
-    async def test_deduplicates_and_stops_on_repeats(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_deduplicates_and_stops_on_repeats(self, client: SxmClient, channel_item: dict) -> None:
         # A server that keeps returning the same page must not loop forever.
-        page = {
-            "container": {"sets": [{"items": [channel_item], "pagination": {"hits": 999}}]}
-        }
+        page = {"container": {"sets": [{"items": [channel_item], "pagination": {"hits": 999}}]}}
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
@@ -231,9 +217,7 @@ class TestChannels:
 class TestLibrary:
     """Library entries are id stubs that must be resolved against the catalog."""
 
-    async def test_resolves_stubs_against_the_catalog(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_resolves_stubs_against_the_catalog(self, client: SxmClient, channel_item: dict) -> None:
         wanted = channel_item["entity"]["id"]
         with aioresponses() as mocked:
             mock_auth(mocked)
@@ -336,18 +320,14 @@ class TestStreams:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            mocked.post(
-                f"{API_BASE}/playback/play/v1/tuneSource", status=403, body="not entitled"
-            )
+            mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", status=403, body="not entitled")
             with pytest.raises(NotEntitledError):
                 await client.get_stream("channel-linear", "abc")
             # The failed stream must not be cached.
             assert ("channel-linear", "abc") not in client._streams
         await client.disconnect()
 
-    async def test_streams_are_reused(
-        self, client: SxmClient, tune_source: dict, master_playlist: str
-    ) -> None:
+    async def test_streams_are_reused(self, client: SxmClient, tune_source: dict, master_playlist: str) -> None:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
@@ -676,9 +656,7 @@ class TestSessionRefresh:
             mock_auth(mocked)
             await client.connect()
             # Pretend the refresh cookie is present.
-            client._http_client_session.cookie_jar.update_cookies(
-                {REFRESH_TOKEN_COOKIE: "refresh-me"}
-            )
+            client._http_client_session.cookie_jar.update_cookies({REFRESH_TOKEN_COOKIE: "refresh-me"})
             mocked.post(
                 f"{API_BASE}/session/v1/sessions/refresh",
                 payload={
@@ -701,9 +679,7 @@ class TestSessionRefresh:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            client._http_client_session.cookie_jar.update_cookies(
-                {REFRESH_TOKEN_COOKIE: "stale"}
-            )
+            client._http_client_session.cookie_jar.update_cookies({REFRESH_TOKEN_COOKIE: "stale"})
             mocked.post(f"{API_BASE}/session/v1/sessions/refresh", status=401)
             assert await client._refresh_session() is False
             # A full re-auth must still work afterwards.
@@ -731,9 +707,7 @@ class TestConcurrency:
             mock_auth(mocked)
             for _ in range(5):
                 mocked.get(f"{API_BASE}/ping", payload={"ok": True})
-            results = await asyncio.gather(
-                *(client.request("GET", f"{API_BASE}/ping") for _ in range(5))
-            )
+            results = await asyncio.gather(*(client.request("GET", f"{API_BASE}/ping") for _ in range(5)))
 
         assert all(r == {"ok": True} for r in results)
         assert calls == 1, "five concurrent requests should trigger one login"
@@ -826,9 +800,7 @@ class TestGenreDiscovery:
         assert genres.get("Jazz") == 1
         await client.close()
 
-    async def test_channels_by_genre_is_case_insensitive(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_channels_by_genre_is_case_insensitive(self, client: SxmClient, channel_item: dict) -> None:
         jazz = {
             **channel_item,
             "entity": {**channel_item["entity"], "id": "j1"},
@@ -875,9 +847,7 @@ class TestSportsBroadcasts:
                                 "texts": {"title": {"default": "Hometown Play-by-Play"}},
                             },
                             "decorations": {"airDate": "2026-08-10T04:00:00Z"},
-                            "actions": {
-                                "play": [{"entity": {"type": "channel-linear", "id": "ch1"}}]
-                            },
+                            "actions": {"play": [{"entity": {"type": "channel-linear", "id": "ch1"}}]},
                         }
                     ]
                 }
@@ -911,9 +881,7 @@ class TestSportsBroadcasts:
                                                             "id": "f1",
                                                             "type": "episode-linear",
                                                         },
-                                                        "decorations": {
-                                                            "airingCoverage": "AWAY"
-                                                        },
+                                                        "decorations": {"airingCoverage": "AWAY"},
                                                         "actions": {
                                                             "play": [
                                                                 {
@@ -930,9 +898,7 @@ class TestSportsBroadcasts:
                                                             "id": "f2",
                                                             "type": "episode-linear",
                                                         },
-                                                        "decorations": {
-                                                            "airingCoverage": "HOME"
-                                                        },
+                                                        "decorations": {"airingCoverage": "HOME"},
                                                         "actions": {
                                                             "play": [
                                                                 {
@@ -1010,9 +976,7 @@ class TestSportsBroadcasts:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            mocked.get(
-                re.compile(r".*/page/v1/page/team/.*"), payload={"page": {"containers": []}}
-            )
+            mocked.get(re.compile(r".*/page/v1/page/team/.*"), payload={"page": {"containers": []}})
             assert await client.get_team_broadcasts("t1") == []
         await client.close()
 
@@ -1056,11 +1020,7 @@ class TestContainerBrowsing:
             mocked.get(re.compile(r".*/page/v1/page/talent/.*"), payload=self.PAGE)
             mocked.get(
                 re.compile(r".*container/aod\?.*"),
-                payload={
-                    "container": {
-                        "sets": [{"items": [{"entity": {"id": "e1", "type": "episode-audio"}}]}]
-                    }
-                },
+                payload={"container": {"sets": [{"items": [{"entity": {"id": "e1", "type": "episode-audio"}}]}]}},
             )
             items = await client.browse_entity("talent", "t1", "aod")
         assert [i["entity"]["id"] for i in items] == ["e1"]
@@ -1080,9 +1040,7 @@ class TestContainerBrowsing:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            mocked.get(
-                re.compile(r".*/page/v1/page/talent/.*"), payload={"page": {"containers": []}}
-            )
+            mocked.get(re.compile(r".*/page/v1/page/talent/.*"), payload={"page": {"containers": []}})
             assert await client.get_containers("talent", "t1") == {}
         await client.close()
 
@@ -1104,9 +1062,7 @@ class TestArtistStationSearch:
             await client.connect()
             mocked.post(
                 f"{API_BASE}/search/v1/search",
-                payload={
-                    "container": {"sets": [{"items": [{"entity": self.STATION_ENTITY}]}]}
-                },
+                payload={"container": {"sets": [{"items": [{"entity": self.STATION_ENTITY}]}]}},
             )
             stations = await client.search_artist_stations("sinatra")
         assert [s.title for s in stations] == ["Frank Sinatra"]
@@ -1137,11 +1093,7 @@ class TestArtistStationSearch:
             mocked.get(
                 re.compile(r".*/page/v1/page/talent/.*"),
                 payload={
-                    "page": {
-                        "containers": [
-                            {"url": "relationship/v1/container/pandora-artist-radio?entityId=t1"}
-                        ]
-                    }
+                    "page": {"containers": [{"url": "relationship/v1/container/pandora-artist-radio?entityId=t1"}]}
                 },
             )
             mocked.get(
@@ -1155,9 +1107,7 @@ class TestArtistStationSearch:
                                         "entity": {
                                             "id": "as2",
                                             "type": "artist-station",
-                                            "texts": {
-                                                "title": {"default": "Frank Sinatra (Holiday)"}
-                                            },
+                                            "texts": {"title": {"default": "Frank Sinatra (Holiday)"}},
                                         }
                                     }
                                 ]
@@ -1254,9 +1204,7 @@ class TestChannelCache:
         mocked.get(CHANNELS_RE, payload={"container": {"sets": [{"items": [item]}]}})
         mocked.get(CHANNELS_RE, payload={"container": {"sets": []}})
 
-    async def test_second_call_is_served_from_cache(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_second_call_is_served_from_cache(self, client: SxmClient, channel_item: dict) -> None:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
@@ -1277,9 +1225,7 @@ class TestChannelCache:
             assert [c.id for c in await client.get_channels(refresh=True)] == ["new"]
         await client.close()
 
-    async def test_expired_cache_is_rebuilt(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_expired_cache_is_rebuilt(self, client: SxmClient, channel_item: dict) -> None:
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
@@ -1290,9 +1236,7 @@ class TestChannelCache:
             assert [c.id for c in await client.get_channels()] == ["new"]
         await client.close()
 
-    async def test_concurrent_callers_walk_once(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_concurrent_callers_walk_once(self, client: SxmClient, channel_item: dict) -> None:
         # Five simultaneous callers must not each start their own walk.
         with aioresponses() as mocked:
             mock_auth(mocked)
@@ -1302,9 +1246,7 @@ class TestChannelCache:
         assert all([c.id for c in r] == ["c1"] for r in results)
         await client.close()
 
-    async def test_callers_get_their_own_list(
-        self, client: SxmClient, channel_item: dict
-    ) -> None:
+    async def test_callers_get_their_own_list(self, client: SxmClient, channel_item: dict) -> None:
         # A caller mutating the returned list must not corrupt the cache.
         with aioresponses() as mocked:
             mock_auth(mocked)

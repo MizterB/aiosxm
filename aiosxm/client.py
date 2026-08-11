@@ -304,11 +304,7 @@ class SxmClient:
         if not self._http_client_session:
             return None
         return next(
-            (
-                cookie.value
-                for cookie in self._http_client_session.cookie_jar
-                if cookie.key == REFRESH_TOKEN_COOKIE
-            ),
+            (cookie.value for cookie in self._http_client_session.cookie_jar if cookie.key == REFRESH_TOKEN_COOKIE),
             None,
         )
 
@@ -336,9 +332,7 @@ class SxmClient:
 
         self._authenticated_session = session
         expires_at = session.get("accessTokenExpiresAt")
-        self._access_token_expiration = (
-            datetime.fromisoformat(expires_at) if expires_at else None
-        )
+        self._access_token_expiration = datetime.fromisoformat(expires_at) if expires_at else None
         _LOGGER.debug("Refreshed access token without a full login")
         return True
 
@@ -370,9 +364,7 @@ class SxmClient:
 
                 self._access_token = session["accessToken"]
                 expires_at = session.get("accessTokenExpiresAt")
-                self._access_token_expiration = (
-                    datetime.fromisoformat(expires_at) if expires_at else None
-                )
+                self._access_token_expiration = datetime.fromisoformat(expires_at) if expires_at else None
             except RequestError as err:
                 message = f"An error occurred during authentication of user {self._username}"
                 raise AuthenticationError(message, original_exception=err) from err
@@ -573,9 +565,7 @@ class SxmClient:
             if not entity_type.startswith("channel"):
                 continue
             channels.extend(
-                channel
-                for entity in entities
-                if (channel := Channel.from_item({"entity": entity})) is not None
+                channel for entity in entities if (channel := Channel.from_item({"entity": entity})) is not None
             )
         return channels
 
@@ -631,9 +621,7 @@ class SxmClient:
         """Follow a container URL and return the entities it holds."""
         resp = await self.request(method="GET", url=f"{API_BASE}/{url.lstrip('/')}")
         return [
-            item
-            for result_set in resp.get("container", {}).get("sets", [])
-            for item in result_set.get("items", [])
+            item for result_set in resp.get("container", {}).get("sets", []) for item in result_set.get("items", [])
         ]
 
     async def browse_entity(self, entity_type: str, entity_id: str, container: str) -> list[dict]:
@@ -644,10 +632,7 @@ class SxmClient:
         """
         containers = await self.get_containers(entity_type, entity_id)
         if container not in containers:
-            message = (
-                f"{entity_type}/{entity_id} has no container {container!r}; "
-                f"available: {sorted(containers)}"
-            )
+            message = f"{entity_type}/{entity_id} has no container {container!r}; available: {sorted(containers)}"
             raise KeyError(message)
         return await self.get_container(containers[container])
 
@@ -808,9 +793,7 @@ class SxmClient:
         for entity_type, entities in results.items():
             if not entity_type.startswith("channel"):
                 continue
-            channels.extend(
-                c for e in entities if (c := Channel.from_item({"entity": e})) is not None
-            )
+            channels.extend(c for e in entities if (c := Channel.from_item({"entity": e})) is not None)
 
         shows = results.get("show-podcast", []) + results.get("show", [])
 
