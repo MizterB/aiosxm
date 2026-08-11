@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aiosxm test console</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+<style>
+  :root {
+    --bg: #11131a; --panel: #181b24; --panel-2: #1f2430; --line: #2a3040;
+    --text: #e6e9ef; --dim: #9aa3b5; --accent: #4da3ff; --good: #3ecf8e;
+    --warn: #ffb454; --bad: #ff6b6b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line);
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  h1 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: .2px; }
+  .status { font-size: 12px; color: var(--dim); }
+  .status b { color: var(--good); font-weight: 600; }
+  input, select, button {
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 10px; font: inherit; font-size: 13px;
+  }
+  button { cursor: pointer; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  main { flex: 1; display: grid; grid-template-columns: minmax(340px, 1.1fr) minmax(380px, 1fr); min-height: 0; }
+  .col { min-height: 0; display: flex; flex-direction: column; }
+  .col + .col { border-left: 1px solid var(--line); }
+  .list { overflow-y: auto; flex: 1; }
+  .row {
+    display: grid; grid-template-columns: 44px 46px 1fr auto; gap: 10px;
+    align-items: center; padding: 7px 12px; border-bottom: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .row:hover { background: var(--panel); }
+  .row.active { background: #1d2740; box-shadow: inset 3px 0 0 var(--accent); }
+  .row img { width: 44px; height: 44px; border-radius: 5px; background: var(--panel-2); object-fit: cover; }
+  .num { color: var(--dim); font-variant-numeric: tabular-nums; font-size: 12px; text-align: right; }
+  .name { min-width: 0; }
+  .name .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .name .np {
+    font-size: 12px; color: var(--dim); white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .name .np.ad { color: var(--warn); }
+  .tag { font-size: 10px; color: var(--dim); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  .tag.locked { color: var(--warn); border-color: #4a3a20; }
+  .save {
+    background: none; border: 1px solid var(--line); color: var(--dim);
+    border-radius: 5px; padding: 2px 8px; font-size: 15px; line-height: 1.2;
+  }
+  .save:hover { border-color: var(--accent); color: var(--text); }
+  .save.saved { color: var(--good); border-color: #2c5c46; }
+  .pane-head {
+    padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
+    font-size: 12px; color: var(--dim); display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  #player { padding: 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .now { display: flex; gap: 12px; align-items: center; }
+  .now img { width: 72px; height: 72px; border-radius: 6px; background: var(--panel-2); object-fit: cover; }
+  .now .meta { min-width: 0; flex: 1; }
+  .now .title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .now .sub { color: var(--dim); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  audio { width: 100%; margin-top: 10px; color-scheme: dark; }
+  pre {
+    margin: 0; padding: 12px; overflow: auto; flex: 1; font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #cbd3e1;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .log { border-top: 1px solid var(--line); max-height: 30%; overflow-y: auto; padding: 8px 12px;
+         font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--dim); }
+  .log .err { color: var(--bad); }
+  .log .ok { color: var(--good); }
+  .empty { padding: 24px; color: var(--dim); text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>aiosxm</h1>
+  <span class="status" id="status">starting…</span>
+  <input id="filter" placeholder="Filter channels…" style="flex:1;min-width:160px">
+  <select id="source">
+    <option value="/channels">All channels</option>
+    <option value="/library">My library</option>
+    <option value="__genres">Browse by genre…</option>
+    <option value="__stations">Find artist station…</option>
+    <option value="__podcasts">Find podcast…</option>
+    <option value="__search">Search everything…</option>
+  </select>
+  <select id="genre" style="display:none"></select>
+  <select id="bitrate">
+    <option value="256k">256k</option>
+    <option value="96k">96k</option>
+    <option value="64k">64k</option>
+    <option value="32k">32k</option>
+  </select>
+  <label class="status"><input type="checkbox" id="linearOnly" checked> linear only</label>
+  <button id="reload">Reload</button>
+</header>
+
+<main>
+  <div class="col">
+    <div class="pane-head">
+      <button id="back" style="display:none">&#8592; Back</button>
+      <span id="count">…</span>
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div class="col">
+    <div id="player">
+      <div class="now">
+        <img id="npArt" alt="">
+        <div class="meta">
+          <div class="title" id="npTitle">Nothing playing</div>
+          <div class="sub" id="npSub">Pick a channel on the left</div>
+          <div class="sub" id="npShow"></div>
+        </div>
+      </div>
+      <audio id="audio" controls></audio>
+    </div>
+    <div class="pane-head">
+      <span>Inspector</span>
+      <button data-view="channel">channel</button>
+      <button data-view="nowplaying">now-playing</button>
+      <button data-view="playlist">playlist</button>
+      <button data-view="entitlements">entitlements</button>
+    </div>
+    <pre id="inspect">Select a channel to inspect the raw API response.</pre>
+    <div class="log" id="log"></div>
+  </div>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let channels = [], nowPlaying = {}, current = null, hls = null, view = "channel";
+let libraryIds = new Set();
+let tuneGeneration = 0;
+let rebuildingBitrates = false;
+let stationEndedHandler = null;
+// Where the list came from, so drilling into a show can be undone.
+let previousView = null;
+// ?hlsjs=1 forces the MSE path even where native HLS exists (for debugging).
+const forceHlsJs = new URLSearchParams(location.search).has("hlsjs");
+
+async function refreshLibraryIds() {
+  try {
+    libraryIds = new Set((await api("/library")).map((x) => x.id));
+  } catch { /* logged in api() */ }
+}
+
+async function toggleLibrary(item) {
+  const saved = libraryIds.has(item.id);
+  const path = `/library/${item.type}/${item.id}`;
+  try {
+    const r = await fetch(path, { method: saved ? "DELETE" : "POST" });
+    if (!r.ok) { log(`${path} → ${r.status}`, "err"); return; }
+    log(`${saved ? "removed" : "added"} ${item.title}`, "ok");
+    if (saved) libraryIds.delete(item.id); else libraryIds.add(item.id);
+    // Re-read rather than trust the local edit; the account is the source of truth.
+    await refreshLibraryIds();
+    render();
+  } catch (e) {
+    log("library update failed: " + e.message, "err");
+  }
+}
+
+function log(msg, cls = "") {
+  const el = document.createElement("div");
+  el.className = cls;
+  el.textContent = new Date().toLocaleTimeString() + "  " + msg;
+  $("log").prepend(el);
+  while ($("log").children.length > 80) $("log").lastChild.remove();
+}
+
+async function api(path) {
+  const t0 = performance.now();
+  const r = await fetch(path);
+  const ms = Math.round(performance.now() - t0);
+  if (!r.ok) {
+    const body = await r.text();
+    log(`${path} → ${r.status} ${body.slice(0, 120)}`, "err");
+    throw new Error(`${r.status}`);
+  }
+  log(`${path} → ${r.status} (${ms}ms)`, "ok");
+  const ct = r.headers.get("content-type") || "";
+  return ct.includes("json") ? r.json() : r.text();
+}
+
+function art(ch) {
+  if (ch.image_url) return ch.image_url;          // artist stations
+  const i = (ch.images || []).find((x) => x.name === "tile" && x.aspect_ratio === "1x1")
+         || (ch.images || []).find((x) => x.name === "logo")
+         || (ch.images || [])[0];
+  return i ? i.url : "";
+}
+
+function render() {
+  const q = $("filter").value.trim().toLowerCase();
+  const linearOnly = $("linearOnly").checked;
+  const rows = channels.filter((c) => {
+    const alwaysShow = c.isShow || c.is_show || c.type === "artist-station"
+      || c.type === "team" || c.type === "show" || c.type === "show-podcast"
+      || String(c.type || "").startsWith("episode");
+    if (linearOnly && !alwaysShow && c.type !== "channel-linear") return false;
+    if (!q) return true;
+    const np = nowPlaying[c.id];
+    return (c.title || "").toLowerCase().includes(q)
+        || (c.channel_number || "").includes(q)
+        || (c.genre || "").toLowerCase().includes(q)
+        || (np && `${np.artist} ${np.title}`.toLowerCase().includes(q));
+  });
+
+  $("count").textContent =
+    `${rows.length} of ${channels.length} channels · ${Object.keys(nowPlaying).length} with metadata`;
+
+  const list = $("list");
+  list.innerHTML = "";
+  if (!rows.length) {
+    list.innerHTML = '<div class="empty">No channels match.</div>';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  for (const c of rows) {
+    const np = nowPlaying[c.id];
+    const row = document.createElement("div");
+    row.className = "row" + (current && current.id === c.id ? " active" : "");
+    row.innerHTML = `
+      <img loading="lazy" src="${art(c)}" alt="">
+      <div class="num">${c.channel_number ?? ""}</div>
+      <div class="name">
+        <div class="t">${esc(c.title)}</div>
+        <div class="np${np && np.is_ad ? " ad" : ""}">${
+          np ? esc([np.artist, np.title].filter(Boolean).join(" — ")) + (np.is_ad ? "  [ad]" : "")
+             : esc(subtitleFor(c))
+        }</div>
+      </div>
+      <div>${c.unentitled ? '<span class="tag locked">locked</span>' : ""}${
+        c.type === "channel-xtra" ? '<span class="tag">xtra</span>' : ""}${
+        c.type === "artist-station" ? '<span class="tag">station</span>' : ""}${
+        (c.isShow || c.is_show) ? '<span class="tag">show</span>' : ""}${
+        c.type === "team" ? '<span class="tag">team</span>' : ""}${
+        String(c.type || "").startsWith("episode") ? '<span class="tag">episode</span>' : ""}
+        <button class="save${libraryIds.has(c.id) ? " saved" : ""}"
+                title="${libraryIds.has(c.id) ? "Remove from" : "Add to"} library">${
+          libraryIds.has(c.id) ? "&#10003;" : "+"}</button></div>`;
+    row.querySelector(".save").onclick = (e) => { e.stopPropagation(); toggleLibrary(c); };
+    row.onclick = () => play(c);
+    frag.appendChild(row);
+  }
+  list.appendChild(frag);
+}
+
+function subtitleFor(c) {
+  if (c.duration || c.air_date) {
+    const mins = c.duration ? `${Math.round(c.duration / 60)} min` : "";
+    const aired = c.air_date ? String(c.air_date).slice(0, 10) : "";
+    return [mins, aired].filter(Boolean).join(" · ");
+  }
+  if (c.isShow || c.is_show) return c.description ? String(c.description).slice(0, 90) : "podcast";
+  return c.genre || "";
+}
+
+function esc(s) {
+  return (s ?? "").toString().replace(/[&<>"]/g, (m) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+}
+
+function updateNowPlaying() {
+  if (!current) return;
+  // Artist stations and on-demand episodes aren't in the lookaround feed; their
+  // details are set by play() and would be clobbered by the poll.
+  if (current.type === "artist-station") return;
+  if (current.isShow || current.is_show || String(current.type || "").startsWith("episode")) return;
+  const np = nowPlaying[current.id];
+  $("npTitle").textContent = np && np.title ? np.title : current.title;
+  $("npSub").textContent = np && np.artist
+    ? np.artist + (np.is_ad ? "  [ad]" : "")
+    : `Channel ${current.channel_number ?? ""}`;
+  $("npShow").textContent = np && np.show ? np.show : "";
+  const src = (np && np.image_url) || art(current);
+  $("npArt").src = src || "";
+  if (view === "nowplaying" || view === "channel") showView(view);
+}
+
+function showTrack(track) {
+  $("npTitle").textContent = track.title || "";
+  $("npSub").textContent = track.artist || "";
+  $("npShow").textContent = track.album || "";
+  $("npArt").src = track.image_url || "";
+}
+
+// An artist station is a queue of separate files, not a continuous stream, so
+// the player has to advance itself when each track ends and top the queue back
+// up before it runs dry.
+function startStationQueue(ch, tracks, generation, stale) {
+  const audio = $("audio");
+  const queue = [...tracks];
+  const seen = new Set(queue.map((t) => t.id));
+  let index = 0;
+  let refilling = false;
+
+  const playAt = (i) => {
+    const track = queue[i];
+    if (!track || !track.url) { log("queue exhausted", "err"); return; }
+    showTrack(track);
+    audio.src = track.url;
+    audio.play().catch((e) => log("autoplay blocked: " + e.message));
+  };
+
+  const refill = async () => {
+    if (refilling || stale()) return;
+    refilling = true;
+    try {
+      const more = await api(`/stream/${ch.type}/${ch.id}/tracks?count=12`);
+      if (stale()) return;
+      const fresh = more.filter((t) => t.url && !seen.has(t.id));
+      fresh.forEach((t) => seen.add(t.id));
+      queue.push(...fresh);
+      if (fresh.length) log(`queue topped up (+${fresh.length})`, "ok");
+    } catch { /* logged in api() */ } finally {
+      refilling = false;
+    }
+  };
+
+  const onEnded = () => {
+    if (stale()) { audio.removeEventListener("ended", onEnded); return; }
+    index += 1;
+    if (index >= queue.length) {
+      log("waiting for more tracks…");
+      refill().then(() => { if (!stale()) playAt(index); });
+      return;
+    }
+    playAt(index);
+    // Keep a couple of tracks in hand so the next end doesn't stall.
+    if (queue.length - index <= 2) refill();
+  };
+
+  // Replace any handler left by a previous station.
+  if (stationEndedHandler) audio.removeEventListener("ended", stationEndedHandler);
+  stationEndedHandler = onEnded;
+  audio.addEventListener("ended", onEnded);
+
+  playAt(0);
+}
+
+async function showEpisodes(show) {
+  // Snapshot before the "loading" message overwrites the status we'd restore.
+  const snapshot = { channels, status: $("status").innerHTML, label: show.title };
+  $("status").textContent = `loading ${show.title}…`;
+  try {
+    const episodes = await api(`/podcasts/${show.id}/episodes`);
+    previousView = snapshot;
+    channels = episodes;
+    $("status").innerHTML = `<b>${show.title}</b> · ${episodes.length} episodes`;
+    updateBackButton();
+    render();
+  } catch {
+    $("status").textContent = "could not load episodes";
+  }
+}
+
+function updateBackButton() {
+  const back = $("back");
+  back.style.display = previousView ? "" : "none";
+  back.textContent = previousView ? `\u2190 Back` : "";
+}
+
+function goBack() {
+  if (!previousView) return;
+  channels = previousView.channels;
+  $("status").innerHTML = previousView.status;
+  previousView = null;
+  updateBackButton();
+  render();
+}
+
+async function play(ch) {
+  // A show is a container: clicking it lists its episodes instead of playing.
+  if (ch.isShow || ch.is_show) return showEpisodes(ch);
+  // Every tune gets a generation number, declared before any branch uses it.
+  // play() awaits partway through, so a second click can interleave with the
+  // first; without this the earlier call resumes and attaches to a torn-down
+  // SourceBuffer ("InvalidStateError ... removed from the parent media source").
+  const generation = ++tuneGeneration;
+  const stale = () => generation !== tuneGeneration;
+
+  current = ch;
+  render();
+  updateNowPlaying();
+  showView("channel");
+
+  if (ch.unentitled) {
+    log(`${ch.title} is marked unentitled — playback will likely 403`, "err");
+  }
+
+  // On-demand episodes are a single media file, not a live stream. Feeding one
+  // through hls.js leaves duration as Infinity and the seek bar unusable, so
+  // hand it straight to the audio element.
+  if (String(ch.type || "").startsWith("episode")) {
+    const audio = $("audio");
+    if (stationEndedHandler) {
+      audio.removeEventListener("ended", stationEndedHandler);
+      stationEndedHandler = null;
+    }
+    if (hls) { hls.destroy(); hls = null; }
+    showTrack({
+      title: ch.title,
+      artist: ch.air_date ? String(ch.air_date).slice(0, 10) : "",
+      album: "",
+      image_url: ch.image_url,
+    });
+    audio.src = `/stream/${ch.type}/${ch.id}/playlist.m3u8`;
+    audio.play().catch((e) => log("autoplay blocked: " + e.message));
+    return;
+  }
+
+  // Artist stations are a queue of plain MP4 tracks rather than HLS, so they
+  // play directly through the <audio> element with no hls.js involved.
+  if (ch.type === "artist-station") {
+    try {
+      const tracks = await api(`/stream/${ch.type}/${ch.id}/tracks?count=12`);
+      if (stale()) return;
+      if (!tracks.length) { log("station returned no tracks", "err"); return; }
+      log(`queue: ${tracks.length} tracks`);
+      if (hls) { hls.destroy(); hls = null; }
+      startStationQueue(ch, tracks, generation, stale);
+    } catch (e) {
+      // Don't swallow this: a bare `catch {}` here once hid a ReferenceError
+      // and the station simply failed to play with nothing in the log.
+      log(`station playback failed: ${e.name}: ${e.message}`, "err");
+    }
+    return;
+  }
+
+  // Segments are proxy-relative by default, which is what the browser needs:
+  // the CDN only sends Access-Control-Allow-Origin for siriusxm.com.
+  const url = `/stream/${ch.type}/${ch.id}/playlist.m3u8`
+            + `?bitrate=${$("bitrate").value}`;
+
+  const audio = $("audio");
+  if (stationEndedHandler) {
+    audio.removeEventListener("ended", stationEndedHandler);
+    stationEndedHandler = null;
+  }
+  if (hls) { hls.destroy(); hls = null; }
+  audio.pause();
+  audio.removeAttribute("src");
+  audio.load();
+
+  log(`tuning ${ch.title} (${ch.type})`);
+
+  // Not every channel offers every bitrate; show only the real ones so the
+  // selector can't claim a bitrate the stream will silently substitute.
+  try {
+    const info = await api(`/stream/${ch.type}/${ch.id}/info`);
+    const sel = $("bitrate");
+    const wanted = sel.value;
+    rebuildingBitrates = true;
+    sel.innerHTML = "";
+    for (const b of info.available_bitrates) {
+      const o = document.createElement("option");
+      o.value = b; o.textContent = b;
+      sel.appendChild(o);
+    }
+    if (info.available_bitrates.includes(wanted)) sel.value = wanted;
+    else if (info.available_bitrates.length) {
+      log(`${wanted} unavailable here — using ${sel.value}`, "err");
+    }
+  } catch { /* logged in api() */ } finally {
+    rebuildingBitrates = false;
+  }
+
+  if (stale()) { log("superseded by a newer tune; abandoning"); return; }
+
+  // WebKit plays HLS natively and does it better than hls.js in embedded
+  // webviews, where MSE yields repeated bufferAppendError (VS Code's Simple
+  // Browser). Chrome and Safari both answer "maybe" to canPlayType, so that
+  // can't tell them apart — detect WebKit-not-Chromium instead, and require
+  // that the element really does claim HLS support.
+  const isWebKit = /AppleWebKit/.test(navigator.userAgent)
+    && !/Chrome|Chromium|Edg\//.test(navigator.userAgent);
+  const nativeHls = isWebKit && !!audio.canPlayType("application/vnd.apple.mpegurl");
+  if (nativeHls && !forceHlsJs) {
+    log("using native HLS");
+    audio.src = url;
+    audio.play().catch((e) => log("autoplay blocked: " + e.message));
+    return;
+  }
+
+  if (window.Hls && Hls.isSupported()) {
+    hls = new Hls({ lowLatencyMode: false });
+    let appendErrors = 0;
+    hls.on(Hls.Events.ERROR, (_e, d) => {
+      const why = d.err || d.error;
+      log(
+        `hls ${d.type}/${d.details}${d.response ? " " + d.response.code : ""}` +
+        (why ? ` :: ${why.name || ""} ${String(why.message || why).slice(0, 120)}` : "") +
+        (d.mimeType ? ` mime=${d.mimeType}` : "") +
+        (d.parent ? ` parent=${d.parent}` : ""),
+        "err",
+      );
+      // bufferAppendError is usually non-fatal, so hls.js keeps retrying and the
+      // log fills with it. Recover explicitly, then give up rather than spin.
+      // A detached instance can still emit; drop it rather than spam the log.
+      if (stale()) { try { hls && hls.destroy(); } catch {} return; }
+      if (!d.fatal && d.details === Hls.ErrorDetails.BUFFER_APPEND_ERROR) {
+        if (++appendErrors === 3) {
+          log("repeated buffer append errors — recovering", "err");
+          hls.recoverMediaError();
+        } else if (appendErrors > 6) {
+          log("giving up on MSE; switching to native HLS", "err");
+          hls.destroy(); hls = null;
+          audio.src = url;
+          audio.play().catch(() => {});
+        }
+        return;
+      }
+      if (d.fatal) {
+        if (d.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+        else if (d.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+      }
+    });
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      log(`manifest parsed — ${hls.levels.length} level(s)`, "ok");
+      audio.play().catch((e) => log("autoplay blocked: " + e.message));
+    });
+    hls.loadSource(url);
+    hls.attachMedia(audio);
+  } else {
+    // Neither MSE nor a native player: try anyway and let the element complain.
+    audio.src = url;
+    audio.play().catch((e) => log("autoplay blocked: " + e.message));
+  }
+}
+
+async function showView(which) {
+  view = which;
+  const out = $("inspect");
+  try {
+    if (which === "channel") {
+      out.textContent = current
+        ? JSON.stringify(current, null, 2)
+        : "Select a channel first.";
+    } else if (which === "nowplaying") {
+      out.textContent = current
+        ? JSON.stringify(nowPlaying[current.id] ?? { note: "no now-playing data" }, null, 2)
+        : "Select a channel first.";
+    } else if (which === "playlist") {
+      if (!current) { out.textContent = "Select a channel first."; return; }
+      out.textContent = "loading…";
+      out.textContent = await api(
+        `/stream/${current.type}/${current.id}/playlist.m3u8?bitrate=${$("bitrate").value}`);
+    } else if (which === "entitlements") {
+      out.textContent = "loading…";
+      out.textContent = JSON.stringify(await api("/entitlements"), null, 2);
+    }
+  } catch (e) {
+    out.textContent = "Error: " + e.message;
+  }
+}
+
+async function refreshNowPlaying() {
+  try {
+    nowPlaying = await api("/now-playing");
+    render();
+    updateNowPlaying();
+  } catch { /* logged in api() */ }
+}
+
+async function loadGenres() {
+  const sel = $("genre");
+  if (sel.options.length) return;
+  const genres = await api("/browse/genres");
+  sel.innerHTML = "";
+  for (const g of genres) {
+    const o = document.createElement("option");
+    o.value = g.path; o.textContent = `${g.title} (${g.count})`;
+    sel.appendChild(o);
+  }
+}
+
+async function load(refresh = false) {
+  previousView = null;
+  updateBackButton();
+  const src = $("source").value;
+  $("genre").style.display = src === "__genres" ? "" : "none";
+  $("status").textContent = refresh ? "refreshing…" : "loading…";
+  try {
+    if (src === "__genres") {
+      await loadGenres();
+      channels = await api($("genre").value);
+    } else if (src === "__podcasts") {
+      const q = prompt("Search podcasts for:");
+      if (!q) { $("status").textContent = "cancelled"; return; }
+      const shows = await api(`/shows?q=${encodeURIComponent(q)}`);
+      // Shows aren't playable; clicking one loads its episodes.
+      channels = shows.map((x) => ({ ...x, isShow: true }));
+      $("status").innerHTML = `<b>podcasts</b> · ${channels.length} for ${q}`;
+      render(); updateNowPlaying();
+      return;
+    } else if (src === "__stations") {
+      const q = prompt("Artist station for which artist?");
+      if (!q) { $("status").textContent = "cancelled"; return; }
+      channels = await api(`/artist-stations?q=${encodeURIComponent(q)}`);
+      $("status").innerHTML = `<b>stations</b> · ${channels.length} for ${q}`;
+      render(); updateNowPlaying();
+      return;
+    } else if (src === "__search") {
+      const q = prompt("Search SiriusXM for:");
+      if (!q) { $("status").textContent = "search cancelled"; return; }
+      const results = await api(`/search?q=${encodeURIComponent(q)}`);
+      // Only playable entities can be tuned; containers are listed separately.
+      const playable = ["channel-linear", "channel-xtra", "artist-station"];
+      channels = playable.flatMap((t) => (results[t] || []).map((e) => ({ ...e, type: t })));
+      const shows = (results["show-podcast"] || []).concat(results["show"] || []);
+      if (shows.length) log(`${shows.length} show(s) matched — see /shows?q= for episodes`);
+      $("status").innerHTML = `<b>search</b> · ${channels.length} playable results`;
+      render(); updateNowPlaying();
+      return;
+    } else {
+      channels = await api(src + (refresh && src === "/channels" ? "?refresh=1" : ""));
+    }
+    channels.sort((a, b) => (+a.channel_number || 9e9) - (+b.channel_number || 9e9));
+    await refreshLibraryIds();
+    await refreshNowPlaying();
+    $("status").innerHTML = `<b>connected</b> · ${channels.length} channels`;
+  } catch (e) {
+    $("status").textContent = "failed to load — is the proxy authenticated?";
+  }
+}
+
+$("filter").oninput = render;
+$("linearOnly").onchange = render;
+$("source").onchange = () => load();
+$("genre").onchange = () => load();
+$("reload").onclick = () => load(true);
+$("back").onclick = goBack;
+$("bitrate").onchange = () => {
+  // play() rebuilds this select, and assigning .value can re-fire change in
+  // some engines; ignore it while a tune is in flight or we re-enter play()
+  // and leave orphaned hls.js instances appending to a dead SourceBuffer.
+  if (rebuildingBitrates) return;
+  if (current) play(current);
+};
+document.querySelectorAll("[data-view]").forEach((b) => {
+  b.onclick = () => showView(b.dataset.view);
+});
+
+load();
+setInterval(refreshNowPlaying, 20000);
+</script>
+</body>
+</html>
