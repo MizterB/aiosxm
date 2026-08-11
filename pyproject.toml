@@ -1,15 +1,92 @@
 [project]
 name = "aiosxm"
-version = "0.1.0"
+version = "0.2.0"
 description = "An asynchronous Python library for SiriusXM"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE.md"]
+authors = [{ name = "MizterB" }]
+keywords = ["siriusxm", "sxm", "radio", "streaming", "hls", "asyncio"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Typing :: Typed",
+]
 dependencies = [
     "aiohttp>=3.10.10",
 ]
 
-[tool.ruff.lint]
-select = ["ALL"]
+[project.urls]
+Homepage = "https://github.com/MizterB/aiosxm"
+Issues = "https://github.com/MizterB/aiosxm/issues"
+
+[project.scripts]
+aiosxm-proxy = "aiosxm.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+# Ship the package and its tests; editor and CI config are repo-only.
+include = [
+    "aiosxm",
+    "tests",
+    "README.md",
+    "LICENSE.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["aiosxm"]
+artifacts = ["aiosxm/static/*", "aiosxm/py.typed"]
 
 [tool.ruff]
 line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "CPY001",  # no copyright headers in this project
+    "D203",    # incompatible with D211
+    "D213",    # incompatible with D212
+    "COM812",  # conflicts with the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",     # asserts are the point
+    "SLF001",   # tests may poke at private state
+    "D101",     # test classes are self-describing
+    "D102",
+    "D103",
+    "D401",
+    "ANN001",   # pytest fixtures are untyped by convention
+    "ANN201",
+    "ANN401",
+    "INP001",   # tests/ is not a package
+    "PLR2004",  # magic numbers are fine in assertions
+    "S105",     # dummy tokens, not secrets
+    "S106",
+    "PLC0415",  # local imports keep fixtures self-contained
+    "ANN003",   # **kwargs in test doubles
+]
+
+[dependency-groups]
+dev = [
+    "aioresponses>=0.7.9",
+    "pytest>=9.1.1",
+    "pytest-aiohttp>=1.0.5",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
