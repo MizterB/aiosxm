@@ -1,0 +1,54 @@
+{
+ "profileId": "00000000-0000-0000-0000-000000000000",
+ "allDataMap": {
+  "2ea07147-a720-ed0c-d4ce-d7bddd1640d3": {
+   "entityId": "2ea07147-a720-ed0c-d4ce-d7bddd1640d3",
+   "entityType": "channel-linear",
+   "createdTime": 1761307251044
+  },
+  "7a642de7-c33f-a628-efb2-3d94a829d17b": {
+   "entityId": "7a642de7-c33f-a628-efb2-3d94a829d17b",
+   "entityType": "channel-linear",
+   "createdTime": 1761307718927
+  },
+  "20801778-3df2-d607-eab5-e03de0ca7815": {
+   "entityId": "20801778-3df2-d607-eab5-e03de0ca7815",
+   "entityType": "channel-linear",
+   "createdTime": 1761307748920
+  },
+  "bda81f03-f231-d4db-56ad-40cb132c5663": {
+   "entityId": "bda81f03-f231-d4db-56ad-40cb132c5663",
+   "entityType": "channel-linear",
+   "createdTime": 1761307745240
+  },
+  "c3890f3c-1222-5036-bea9-6d52753bf018": {
+   "entityId": "c3890f3c-1222-5036-bea9-6d52753bf018",
+   "entityType": "channel-linear",
+   "createdTime": 1774721384888
+  },
+  "98672b8b-d1ec-9286-7a7f-b829a617500b": {
+   "entityId": "98672b8b-d1ec-9286-7a7f-b829a617500b",
+   "entityType": "channel-linear",
+   "createdTime": 1774721367408
+  },
+  "c9256031-1123-f35f-4d49-1ba4d5379258": {
+   "entityId": "c9256031-1123-f35f-4d49-1ba4d5379258",
+   "entityType": "channel-linear",
+   "createdTime": 1761307695865
+  },
+  "5ad8659a-414a-9e26-b973-f5a229d788dd": {
+   "entityId": "5ad8659a-414a-9e26-b973-f5a229d788dd",
+   "entityType": "channel-linear",
+   "createdTime": 1761307759222
+  },
+  "95d4d8ef-55e4-8337-78f1-2fda944991d8": {
+   "entityId": "95d4d8ef-55e4-8337-78f1-2fda944991d8",
+   "entityType": "channel-linear",
+   "createdTime": 1761307236952
+  }
+ },
+ "pins": {
+  "state": "INITIAL",
+  "limit": 24
+ }
+}

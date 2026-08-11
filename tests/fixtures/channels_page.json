@@ -1,0 +1,1721 @@
+{
+ "container": {
+  "id": "3JoBfOCIwo6FmTpzM1S2H7",
+  "sets": [
+   {
+    "texts": {},
+    "style": {
+     "name": "small_list"
+    },
+    "items": [
+     {
+      "decorations": {
+       "genre": "Pop",
+       "pxp": false,
+       "unentitled": false,
+       "channelNumberCanonical": 2,
+       "similarArtists": [],
+       "contentTags": [],
+       "talentYoullHear": [
+        "Olivia Rodrigo",
+        "Taylor Swift",
+        "Ariana Grande",
+        "Bruno Mars",
+        "Sabrina Carpenter",
+        "Teddy Swims",
+        "Gracie Abrams"
+       ],
+       "lookaroundChannelId": "194adbca-34d6-cb94-b153-3488ee563308",
+       "offAir": false,
+       "hexcode": {
+        "default": "#F0F8FF",
+        "light": "#F0F8FF",
+        "dark": "#F0F8FF"
+       },
+       "contentTypeLabel": "CHANNEL",
+       "channelNumber": 2
+      },
+      "entity": {
+       "type": "channel-linear",
+       "id": "194adbca-34d6-cb94-b153-3488ee563308",
+       "texts": {
+        "title": {
+         "default": "SiriusXM Hits 1"
+        },
+        "description": {
+         "default": "Pop hits, now to next"
+        }
+       },
+       "images": {
+        "background": {
+         "aspect_15x7": {
+          "default": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126592.jpg",
+           "width": 1440,
+           "height": 672
+          },
+          "preferred": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126592.jpg",
+           "width": 1440,
+           "height": 672
+          }
+         },
+         "aspect_16x9": {
+          "default": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126597.jpg",
+           "width": 1920,
+           "height": 1080
+          },
+          "preferred": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126597.jpg",
+           "width": 1920,
+           "height": 1080
+          }
+         },
+         "aspect_9x16": {
+          "default": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126590.jpg",
+           "width": 414,
+           "height": 736
+          },
+          "preferred": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126590.jpg",
+           "width": 414,
+           "height": 736
+          }
+         },
+         "aspect_4x3": {
+          "default": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126595.jpg",
+           "width": 1024,
+           "height": 768
+          },
+          "preferred": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126595.jpg",
+           "width": 1024,
+           "height": 768
+          }
+         }
+        },
+        "white_logo": {
+         "aspect_5x3": {
+          "default": {
+           "url": "if/2c/2c54c959a41e38fda89c28ae3dae2f63_1752761199.png",
+           "width": 424,
+           "height": 248
+          },
+          "preferred": {
+           "url": "if/2c/2c54c959a41e38fda89c28ae3dae2f63_1752761199.png",
+           "width": 424,
+           "height": 248
+          }
+         }
+        },
+        "hero_tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "tile_background": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png",
+           "width": 720,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png",
+           "width": 720,
+           "height": 720
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png",
+           "width": 900,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png",
+           "width": 900,
+           "height": 720
+          }
+         }
+        },
+        "black_logo": {
+         "aspect_5x3": {
+          "default": {
+           "url": "if/01/0194bff5bbe534b187e2589a058b2c46_1752761200.png",
+           "width": 424,
+           "height": 248
+          },
+          "preferred": {
+           "url": "if/01/0194bff5bbe534b187e2589a058b2c46_1752761200.png",
+           "width": 424,
+           "height": 248
+          }
+         }
+        },
+        "dark_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/38/3838692598a73ca1bb0025ebe12c6bee_1752761202.png",
+           "width": 320,
+           "height": 320
+          },
+          "preferred": {
+           "url": "if/38/3838692598a73ca1bb0025ebe12c6bee_1752761202.png",
+           "width": 320,
+           "height": 320
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/0b/0b27ea7ba56b3ba5be01221b8ec33b8f_1752761202.png",
+           "width": 900,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/0b/0b27ea7ba56b3ba5be01221b8ec33b8f_1752761202.png",
+           "width": 900,
+           "height": 720
+          }
+         }
+        },
+        "radio_logo": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/4d/4da1a83fe2aa30218189d73653270f40_1752761200.png",
+           "width": 160,
+           "height": 86
+          },
+          "preferred": {
+           "url": "if/4d/4da1a83fe2aa30218189d73653270f40_1752761200.png",
+           "width": 160,
+           "height": 86
+          }
+         }
+        },
+        "tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        }
+       }
+      },
+      "actions": {
+       "browse": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "194adbca-34d6-cb94-b153-3488ee563308",
+          "texts": {
+           "title": {
+            "default": "SiriusXM Hits 1"
+           },
+           "slug": {}
+          }
+         },
+         "data": {
+          "slug": ""
+         }
+        }
+       ],
+       "play": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "194adbca-34d6-cb94-b153-3488ee563308"
+         },
+         "data": {}
+        }
+       ],
+       "favorite": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "194adbca-34d6-cb94-b153-3488ee563308"
+         },
+         "data": {}
+        }
+       ],
+       "shareLink": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "194adbca-34d6-cb94-b153-3488ee563308",
+          "images": {
+           "background": {
+            "aspect_15x7": {
+             "default": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126592.jpg",
+              "width": 1440,
+              "height": 672
+             },
+             "preferred": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126592.jpg",
+              "width": 1440,
+              "height": 672
+             }
+            },
+            "aspect_16x9": {
+             "default": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126597.jpg",
+              "width": 1920,
+              "height": 1080
+             },
+             "preferred": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126597.jpg",
+              "width": 1920,
+              "height": 1080
+             }
+            },
+            "aspect_9x16": {
+             "default": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126590.jpg",
+              "width": 414,
+              "height": 736
+             },
+             "preferred": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126590.jpg",
+              "width": 414,
+              "height": 736
+             }
+            },
+            "aspect_4x3": {
+             "default": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126595.jpg",
+              "width": 1024,
+              "height": 768
+             },
+             "preferred": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126595.jpg",
+              "width": 1024,
+              "height": 768
+             }
+            }
+           },
+           "white_logo": {
+            "aspect_5x3": {
+             "default": {
+              "url": "if/2c/2c54c959a41e38fda89c28ae3dae2f63_1752761199.png",
+              "width": 424,
+              "height": 248
+             },
+             "preferred": {
+              "url": "if/2c/2c54c959a41e38fda89c28ae3dae2f63_1752761199.png",
+              "width": 424,
+              "height": 248
+             }
+            }
+           },
+           "hero_tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "tile_background": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png",
+              "width": 720,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png",
+              "width": 720,
+              "height": 720
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png",
+              "width": 900,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png",
+              "width": 900,
+              "height": 720
+             }
+            }
+           },
+           "black_logo": {
+            "aspect_5x3": {
+             "default": {
+              "url": "if/01/0194bff5bbe534b187e2589a058b2c46_1752761200.png",
+              "width": 424,
+              "height": 248
+             },
+             "preferred": {
+              "url": "if/01/0194bff5bbe534b187e2589a058b2c46_1752761200.png",
+              "width": 424,
+              "height": 248
+             }
+            }
+           },
+           "dark_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/38/3838692598a73ca1bb0025ebe12c6bee_1752761202.png",
+              "width": 320,
+              "height": 320
+             },
+             "preferred": {
+              "url": "if/38/3838692598a73ca1bb0025ebe12c6bee_1752761202.png",
+              "width": 320,
+              "height": 320
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/0b/0b27ea7ba56b3ba5be01221b8ec33b8f_1752761202.png",
+              "width": 900,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/0b/0b27ea7ba56b3ba5be01221b8ec33b8f_1752761202.png",
+              "width": 900,
+              "height": 720
+             }
+            }
+           },
+           "radio_logo": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/4d/4da1a83fe2aa30218189d73653270f40_1752761200.png",
+              "width": 160,
+              "height": 86
+             },
+             "preferred": {
+              "url": "if/4d/4da1a83fe2aa30218189d73653270f40_1752761200.png",
+              "width": 160,
+              "height": 86
+             }
+            }
+           },
+           "tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           }
+          },
+          "texts": {
+           "title": {
+            "default": "SiriusXM Hits 1"
+           },
+           "slug": {}
+          }
+         }
+        }
+       ]
+      }
+     },
+     {
+      "decorations": {
+       "genre": "Pop",
+       "pxp": false,
+       "unentitled": false,
+       "channelNumberCanonical": 3,
+       "similarArtists": [],
+       "contentTags": [],
+       "talentYoullHear": [
+        "Taylor Swift",
+        "Ariana Grande",
+        "Miley Cyrus",
+        "Rihanna",
+        "Justin Bieber",
+        "Demi Lovato",
+        "Gracie Abrams",
+        "Lady Gaga"
+       ],
+       "lookaroundChannelId": "98672b8b-d1ec-9286-7a7f-b829a617500b",
+       "offAir": false,
+       "hexcode": {
+        "default": "#F0F8FF",
+        "light": "#F0F8FF",
+        "dark": "#F0F8FF"
+       },
+       "contentTypeLabel": "CHANNEL",
+       "channelNumber": 3
+      },
+      "entity": {
+       "type": "channel-linear",
+       "id": "98672b8b-d1ec-9286-7a7f-b829a617500b",
+       "texts": {
+        "title": {
+         "default": "Unwell Music"
+        },
+        "description": {
+         "default": "Alex Cooper's faves (explicit)"
+        }
+       },
+       "images": {
+        "background": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126378.jpg",
+           "width": 1920,
+           "height": 1080
+          },
+          "preferred": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126378.jpg",
+           "width": 1920,
+           "height": 1080
+          }
+         },
+         "aspect_26x5": {
+          "default": {
+           "url": "if/19/19c096b98867384d83124350cc4fe593_1756126383.jpg",
+           "width": 2880,
+           "height": 564
+          },
+          "preferred": {
+           "url": "if/19/19c096b98867384d83124350cc4fe593_1756126383.jpg",
+           "width": 2880,
+           "height": 564
+          }
+         },
+         "aspect_4x3": {
+          "default": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+           "width": 1024,
+           "height": 768
+          },
+          "preferred": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+           "width": 1024,
+           "height": 768
+          }
+         },
+         "aspect_9x16": {
+          "default": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126370.jpg",
+           "width": 414,
+           "height": 736
+          },
+          "preferred": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126370.jpg",
+           "width": 414,
+           "height": 736
+          }
+         },
+         "aspect_15x7": {
+          "default": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126372.jpg",
+           "width": 1440,
+           "height": 672
+          },
+          "preferred": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126372.jpg",
+           "width": 1440,
+           "height": 672
+          }
+         }
+        },
+        "white_logo": {
+         "aspect_5x3": {
+          "default": {
+           "url": "if/38/38708152349432ff80a75af7def4e636_1763145518.png",
+           "width": 424,
+           "height": 248
+          },
+          "preferred": {
+           "url": "if/38/38708152349432ff80a75af7def4e636_1763145518.png",
+           "width": 424,
+           "height": 248
+          }
+         }
+        },
+        "hero_tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/e5/e531314e33273774b6ed34b13ac2c30a_1764690349.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/e5/e531314e33273774b6ed34b13ac2c30a_1764690349.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         }
+        },
+        "logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/39/398fd8e8e27f352d863cd3b47e74ab4c_1763145514.png",
+           "width": 720,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/39/398fd8e8e27f352d863cd3b47e74ab4c_1763145514.png",
+           "width": 720,
+           "height": 720
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/61/6157cf061130399f979fe97012ae1c43_1763145516.png",
+           "width": 900,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/61/6157cf061130399f979fe97012ae1c43_1763145516.png",
+           "width": 900,
+           "height": 720
+          }
+         }
+        },
+        "on_white_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/a8/a83a8dbcad1f38699282d912890c4341_1756126390.png",
+           "width": 300,
+           "height": 300
+          },
+          "preferred": {
+           "url": "if/a8/a83a8dbcad1f38699282d912890c4341_1756126390.png",
+           "width": 300,
+           "height": 300
+          }
+         }
+        },
+        "black_logo": {
+         "aspect_5x3": {
+          "default": {
+           "url": "if/b0/b063f7ad2362320a812923e04b59ef1f_1763145518.png",
+           "width": 424,
+           "height": 248
+          },
+          "preferred": {
+           "url": "if/b0/b063f7ad2362320a812923e04b59ef1f_1763145518.png",
+           "width": 424,
+           "height": 248
+          }
+         }
+        },
+        "dark_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/3f/3fc03787fc453854bd4d39d2b940ad0f_1763145513.png",
+           "width": 320,
+           "height": 320
+          },
+          "preferred": {
+           "url": "if/3f/3fc03787fc453854bd4d39d2b940ad0f_1763145513.png",
+           "width": 320,
+           "height": 320
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/d8/d89f12b040323e898493b9bbda8ce7f0_1763145516.png",
+           "width": 900,
+           "height": 720
+          },
+          "preferred": {
+           "url": "if/d8/d89f12b040323e898493b9bbda8ce7f0_1763145516.png",
+           "width": 900,
+           "height": 720
+          }
+         }
+        },
+        "radio_logo": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/a7/a756200d4dbb342cb72b603481389ae5_1763145512.png",
+           "width": 160,
+           "height": 86
+          },
+          "preferred": {
+           "url": "if/a7/a756200d4dbb342cb72b603481389ae5_1763145512.png",
+           "width": 160,
+           "height": 86
+          }
+         }
+        },
+        "tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/9a/9a1aad20e0fa38699e3b42cd86915933_1782186548.png",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/9a/9a1aad20e0fa38699e3b42cd86915933_1782186548.png",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "if/07/076ca907ff1b3ba7973104904bf14ef1_1782186547.png",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "if/07/076ca907ff1b3ba7973104904bf14ef1_1782186547.png",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "tile_background": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/96/96a24dfb599a39268d81b07729ea0699_1772749266.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/96/96a24dfb599a39268d81b07729ea0699_1772749266.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "if/70/70f1ee04f4d93b15bf6fed464969d54c_1772749268.jpg",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "if/70/70f1ee04f4d93b15bf6fed464969d54c_1772749268.jpg",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "on_blue_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/b0/b0c9bb142e073db3afe6cfabcba2c2d8_1756126382.jpg",
+           "width": 546,
+           "height": 546
+          },
+          "preferred": {
+           "url": "if/b0/b0c9bb142e073db3afe6cfabcba2c2d8_1756126382.jpg",
+           "width": 546,
+           "height": 546
+          }
+         }
+        }
+       }
+      },
+      "actions": {
+       "browse": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "98672b8b-d1ec-9286-7a7f-b829a617500b",
+          "texts": {
+           "title": {
+            "default": "Unwell Music"
+           },
+           "slug": {}
+          }
+         },
+         "data": {
+          "slug": ""
+         }
+        }
+       ],
+       "play": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "98672b8b-d1ec-9286-7a7f-b829a617500b"
+         },
+         "data": {}
+        }
+       ],
+       "favorite": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "98672b8b-d1ec-9286-7a7f-b829a617500b"
+         },
+         "data": {}
+        }
+       ],
+       "shareLink": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "98672b8b-d1ec-9286-7a7f-b829a617500b",
+          "images": {
+           "background": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126378.jpg",
+              "width": 1920,
+              "height": 1080
+             },
+             "preferred": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126378.jpg",
+              "width": 1920,
+              "height": 1080
+             }
+            },
+            "aspect_26x5": {
+             "default": {
+              "url": "if/19/19c096b98867384d83124350cc4fe593_1756126383.jpg",
+              "width": 2880,
+              "height": 564
+             },
+             "preferred": {
+              "url": "if/19/19c096b98867384d83124350cc4fe593_1756126383.jpg",
+              "width": 2880,
+              "height": 564
+             }
+            },
+            "aspect_4x3": {
+             "default": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+              "width": 1024,
+              "height": 768
+             },
+             "preferred": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+              "width": 1024,
+              "height": 768
+             }
+            },
+            "aspect_9x16": {
+             "default": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126370.jpg",
+              "width": 414,
+              "height": 736
+             },
+             "preferred": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126370.jpg",
+              "width": 414,
+              "height": 736
+             }
+            },
+            "aspect_15x7": {
+             "default": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126372.jpg",
+              "width": 1440,
+              "height": 672
+             },
+             "preferred": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126372.jpg",
+              "width": 1440,
+              "height": 672
+             }
+            }
+           },
+           "white_logo": {
+            "aspect_5x3": {
+             "default": {
+              "url": "if/38/38708152349432ff80a75af7def4e636_1763145518.png",
+              "width": 424,
+              "height": 248
+             },
+             "preferred": {
+              "url": "if/38/38708152349432ff80a75af7def4e636_1763145518.png",
+              "width": 424,
+              "height": 248
+             }
+            }
+           },
+           "hero_tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/e5/e531314e33273774b6ed34b13ac2c30a_1764690349.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/e5/e531314e33273774b6ed34b13ac2c30a_1764690349.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            }
+           },
+           "logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/39/398fd8e8e27f352d863cd3b47e74ab4c_1763145514.png",
+              "width": 720,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/39/398fd8e8e27f352d863cd3b47e74ab4c_1763145514.png",
+              "width": 720,
+              "height": 720
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/61/6157cf061130399f979fe97012ae1c43_1763145516.png",
+              "width": 900,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/61/6157cf061130399f979fe97012ae1c43_1763145516.png",
+              "width": 900,
+              "height": 720
+             }
+            }
+           },
+           "on_white_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/a8/a83a8dbcad1f38699282d912890c4341_1756126390.png",
+              "width": 300,
+              "height": 300
+             },
+             "preferred": {
+              "url": "if/a8/a83a8dbcad1f38699282d912890c4341_1756126390.png",
+              "width": 300,
+              "height": 300
+             }
+            }
+           },
+           "black_logo": {
+            "aspect_5x3": {
+             "default": {
+              "url": "if/b0/b063f7ad2362320a812923e04b59ef1f_1763145518.png",
+              "width": 424,
+              "height": 248
+             },
+             "preferred": {
+              "url": "if/b0/b063f7ad2362320a812923e04b59ef1f_1763145518.png",
+              "width": 424,
+              "height": 248
+             }
+            }
+           },
+           "dark_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/3f/3fc03787fc453854bd4d39d2b940ad0f_1763145513.png",
+              "width": 320,
+              "height": 320
+             },
+             "preferred": {
+              "url": "if/3f/3fc03787fc453854bd4d39d2b940ad0f_1763145513.png",
+              "width": 320,
+              "height": 320
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/d8/d89f12b040323e898493b9bbda8ce7f0_1763145516.png",
+              "width": 900,
+              "height": 720
+             },
+             "preferred": {
+              "url": "if/d8/d89f12b040323e898493b9bbda8ce7f0_1763145516.png",
+              "width": 900,
+              "height": 720
+             }
+            }
+           },
+           "radio_logo": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/a7/a756200d4dbb342cb72b603481389ae5_1763145512.png",
+              "width": 160,
+              "height": 86
+             },
+             "preferred": {
+              "url": "if/a7/a756200d4dbb342cb72b603481389ae5_1763145512.png",
+              "width": 160,
+              "height": 86
+             }
+            }
+           },
+           "tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/9a/9a1aad20e0fa38699e3b42cd86915933_1782186548.png",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/9a/9a1aad20e0fa38699e3b42cd86915933_1782186548.png",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "if/07/076ca907ff1b3ba7973104904bf14ef1_1782186547.png",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "if/07/076ca907ff1b3ba7973104904bf14ef1_1782186547.png",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "tile_background": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/96/96a24dfb599a39268d81b07729ea0699_1772749266.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/96/96a24dfb599a39268d81b07729ea0699_1772749266.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "if/70/70f1ee04f4d93b15bf6fed464969d54c_1772749268.jpg",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "if/70/70f1ee04f4d93b15bf6fed464969d54c_1772749268.jpg",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "on_blue_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/b0/b0c9bb142e073db3afe6cfabcba2c2d8_1756126382.jpg",
+              "width": 546,
+              "height": 546
+             },
+             "preferred": {
+              "url": "if/b0/b0c9bb142e073db3afe6cfabcba2c2d8_1756126382.jpg",
+              "width": 546,
+              "height": 546
+             }
+            }
+           }
+          },
+          "texts": {
+           "title": {
+            "default": "Unwell Music"
+           },
+           "slug": {}
+          }
+         }
+        }
+       ]
+      }
+     },
+     {
+      "decorations": {
+       "genre": "Pop",
+       "unentitled": false,
+       "channelNumberCanonical": 4,
+       "similarArtists": [],
+       "contentTags": [],
+       "talentYoullHear": [
+        "John Mayer",
+        "Billy Joel",
+        "Stevie Wonder"
+       ],
+       "hexcode": {
+        "default": "#F0F8FF",
+        "light": "#F0F8FF",
+        "dark": "#F0F8FF"
+       },
+       "lookaroundChannelId": "916d7bd2-33ad-2fac-5787-cc1865a499be",
+       "contentTypeLabel": "CHANNEL",
+       "channelNumber": 4
+      },
+      "entity": {
+       "type": "channel-linear",
+       "id": "916d7bd2-33ad-2fac-5787-cc1865a499be",
+       "texts": {
+        "title": {
+         "default": "Life with John Mayer"
+        },
+        "description": {
+         "default": "The ever-changing playlist"
+        }
+       },
+       "images": {
+        "background": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126377.jpg",
+           "width": 1920,
+           "height": 1080
+          },
+          "preferred": {
+           "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126377.jpg",
+           "width": 1920,
+           "height": 1080
+          }
+         },
+         "aspect_26x5": {
+          "default": {
+           "url": "if/19/19c096b98867384d83124350cc4fe593_1756126397.jpg",
+           "width": 2880,
+           "height": 564
+          },
+          "preferred": {
+           "url": "if/19/19c096b98867384d83124350cc4fe593_1756126397.jpg",
+           "width": 2880,
+           "height": 564
+          }
+         },
+         "aspect_4x3": {
+          "default": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+           "width": 1024,
+           "height": 768
+          },
+          "preferred": {
+           "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+           "width": 1024,
+           "height": 768
+          }
+         },
+         "aspect_9x16": {
+          "default": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126369.jpg",
+           "width": 414,
+           "height": 736
+          },
+          "preferred": {
+           "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126369.jpg",
+           "width": 414,
+           "height": 736
+          }
+         },
+         "aspect_15x7": {
+          "default": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126371.jpg",
+           "width": 1440,
+           "height": 672
+          },
+          "preferred": {
+           "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126371.jpg",
+           "width": 1440,
+           "height": 672
+          }
+         }
+        },
+        "hero_tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/12/12e3cabe5fbb32b1b6b7dcfb5952f042_1764184586.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/12/12e3cabe5fbb32b1b6b7dcfb5952f042_1764184586.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "aem/a0/a0286eaa47e7510f1d578b90723cf397_1717606261.jpeg",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "aem/a0/a0286eaa47e7510f1d578b90723cf397_1717606261.jpeg",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "on_blue_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/dd/dd2e651f1a143d059d8dcedbc4047c2e_1756126396.jpg",
+           "width": 546,
+           "height": 546
+          },
+          "preferred": {
+           "url": "if/dd/dd2e651f1a143d059d8dcedbc4047c2e_1756126396.jpg",
+           "width": 546,
+           "height": 546
+          }
+         }
+        },
+        "on_white_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/f3/f35ddad97120368480367526d1fbac6e_1756126403.png",
+           "width": 300,
+           "height": 300
+          },
+          "preferred": {
+           "url": "if/f3/f35ddad97120368480367526d1fbac6e_1756126403.png",
+           "width": 300,
+           "height": 300
+          }
+         }
+        },
+        "carousel_tile": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/dd/dd5d651803d53fdcbb5ee9d23169766f_1756126420.jpg",
+           "width": 128,
+           "height": 128
+          },
+          "preferred": {
+           "url": "if/dd/dd5d651803d53fdcbb5ee9d23169766f_1756126420.jpg",
+           "width": 128,
+           "height": 128
+          }
+         }
+        },
+        "dark_logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/d2/d281f8285a4332cebcafd32fab54b435_1756126403.png",
+           "width": 80,
+           "height": 80
+          },
+          "preferred": {
+           "url": "if/d2/d281f8285a4332cebcafd32fab54b435_1756126403.png",
+           "width": 80,
+           "height": 80
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/07/07c62b52fc943bcd9462e57a965addc8_1756126403.png",
+           "width": 80,
+           "height": 64
+          },
+          "preferred": {
+           "url": "if/07/07c62b52fc943bcd9462e57a965addc8_1756126403.png",
+           "width": 80,
+           "height": 64
+          }
+         }
+        },
+        "radio_logo": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/8c/8cfa7c398fdd356cab5be4e14fd2ca98_1756126404.png",
+           "width": 70,
+           "height": 38
+          },
+          "preferred": {
+           "url": "if/8c/8cfa7c398fdd356cab5be4e14fd2ca98_1756126404.png",
+           "width": 70,
+           "height": 38
+          }
+         }
+        },
+        "tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/f5/f5bbf65ebf833efd864e2f954c794eea_1764184600.jpg",
+           "width": 3840,
+           "height": 2160
+          },
+          "preferred": {
+           "url": "if/f5/f5bbf65ebf833efd864e2f954c794eea_1764184600.jpg",
+           "width": 3840,
+           "height": 2160
+          }
+         },
+         "aspect_1x1": {
+          "default": {
+           "url": "if/0f/0f60c38b670b37fb9a0d86a523e8cac5_1764184592.jpg",
+           "width": 1920,
+           "height": 1920
+          },
+          "preferred": {
+           "url": "if/0f/0f60c38b670b37fb9a0d86a523e8cac5_1764184592.jpg",
+           "width": 1920,
+           "height": 1920
+          }
+         }
+        },
+        "logo": {
+         "aspect_1x1": {
+          "default": {
+           "url": "if/3d/3d14bcfc16d830298e7fa83a6a6854ad_1756126395.png",
+           "width": 180,
+           "height": 180
+          },
+          "preferred": {
+           "url": "if/3d/3d14bcfc16d830298e7fa83a6a6854ad_1756126395.png",
+           "width": 180,
+           "height": 180
+          }
+         },
+         "aspect_5x4": {
+          "default": {
+           "url": "if/cd/cdfc0a3b0dc23f628b1ed98d977da5a9_1756126396.png",
+           "width": 180,
+           "height": 144
+          },
+          "preferred": {
+           "url": "if/cd/cdfc0a3b0dc23f628b1ed98d977da5a9_1756126396.png",
+           "width": 180,
+           "height": 144
+          }
+         }
+        },
+        "polaris_hero_tile": {
+         "aspect_16x9": {
+          "default": {
+           "url": "if/9e/9e362574a7363bfeac6d3916a5a5919b_1756126392.jpg",
+           "width": 128,
+           "height": 72
+          },
+          "preferred": {
+           "url": "if/9e/9e362574a7363bfeac6d3916a5a5919b_1756126392.jpg",
+           "width": 128,
+           "height": 72
+          }
+         }
+        }
+       }
+      },
+      "actions": {
+       "browse": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "916d7bd2-33ad-2fac-5787-cc1865a499be",
+          "texts": {
+           "title": {
+            "default": "Life with John Mayer"
+           },
+           "slug": {}
+          }
+         },
+         "data": {
+          "slug": ""
+         }
+        }
+       ],
+       "play": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "916d7bd2-33ad-2fac-5787-cc1865a499be"
+         },
+         "data": {}
+        }
+       ],
+       "favorite": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "916d7bd2-33ad-2fac-5787-cc1865a499be"
+         },
+         "data": {}
+        }
+       ],
+       "shareLink": [
+        {
+         "entity": {
+          "type": "channel-linear",
+          "id": "916d7bd2-33ad-2fac-5787-cc1865a499be",
+          "images": {
+           "background": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126377.jpg",
+              "width": 1920,
+              "height": 1080
+             },
+             "preferred": {
+              "url": "if/de/dea059ce039d3be4a863e175015943b1_1756126377.jpg",
+              "width": 1920,
+              "height": 1080
+             }
+            },
+            "aspect_26x5": {
+             "default": {
+              "url": "if/19/19c096b98867384d83124350cc4fe593_1756126397.jpg",
+              "width": 2880,
+              "height": 564
+             },
+             "preferred": {
+              "url": "if/19/19c096b98867384d83124350cc4fe593_1756126397.jpg",
+              "width": 2880,
+              "height": 564
+             }
+            },
+            "aspect_4x3": {
+             "default": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+              "width": 1024,
+              "height": 768
+             },
+             "preferred": {
+              "url": "if/2a/2ad0a14a6f81327f98dca9fa856143a2_1756126375.jpg",
+              "width": 1024,
+              "height": 768
+             }
+            },
+            "aspect_9x16": {
+             "default": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126369.jpg",
+              "width": 414,
+              "height": 736
+             },
+             "preferred": {
+              "url": "if/b7/b7c39ff97d3538e884929f3f926207d6_1756126369.jpg",
+              "width": 414,
+              "height": 736
+             }
+            },
+            "aspect_15x7": {
+             "default": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126371.jpg",
+              "width": 1440,
+              "height": 672
+             },
+             "preferred": {
+              "url": "if/e7/e7dd69ef00293ab1b0ef662889fdd07d_1756126371.jpg",
+              "width": 1440,
+              "height": 672
+             }
+            }
+           },
+           "hero_tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/12/12e3cabe5fbb32b1b6b7dcfb5952f042_1764184586.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/12/12e3cabe5fbb32b1b6b7dcfb5952f042_1764184586.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "aem/a0/a0286eaa47e7510f1d578b90723cf397_1717606261.jpeg",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "aem/a0/a0286eaa47e7510f1d578b90723cf397_1717606261.jpeg",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "on_blue_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/dd/dd2e651f1a143d059d8dcedbc4047c2e_1756126396.jpg",
+              "width": 546,
+              "height": 546
+             },
+             "preferred": {
+              "url": "if/dd/dd2e651f1a143d059d8dcedbc4047c2e_1756126396.jpg",
+              "width": 546,
+              "height": 546
+             }
+            }
+           },
+           "on_white_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/f3/f35ddad97120368480367526d1fbac6e_1756126403.png",
+              "width": 300,
+              "height": 300
+             },
+             "preferred": {
+              "url": "if/f3/f35ddad97120368480367526d1fbac6e_1756126403.png",
+              "width": 300,
+              "height": 300
+             }
+            }
+           },
+           "carousel_tile": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/dd/dd5d651803d53fdcbb5ee9d23169766f_1756126420.jpg",
+              "width": 128,
+              "height": 128
+             },
+             "preferred": {
+              "url": "if/dd/dd5d651803d53fdcbb5ee9d23169766f_1756126420.jpg",
+              "width": 128,
+              "height": 128
+             }
+            }
+           },
+           "dark_logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/d2/d281f8285a4332cebcafd32fab54b435_1756126403.png",
+              "width": 80,
+              "height": 80
+             },
+             "preferred": {
+              "url": "if/d2/d281f8285a4332cebcafd32fab54b435_1756126403.png",
+              "width": 80,
+              "height": 80
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/07/07c62b52fc943bcd9462e57a965addc8_1756126403.png",
+              "width": 80,
+              "height": 64
+             },
+             "preferred": {
+              "url": "if/07/07c62b52fc943bcd9462e57a965addc8_1756126403.png",
+              "width": 80,
+              "height": 64
+             }
+            }
+           },
+           "radio_logo": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/8c/8cfa7c398fdd356cab5be4e14fd2ca98_1756126404.png",
+              "width": 70,
+              "height": 38
+             },
+             "preferred": {
+              "url": "if/8c/8cfa7c398fdd356cab5be4e14fd2ca98_1756126404.png",
+              "width": 70,
+              "height": 38
+             }
+            }
+           },
+           "tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/f5/f5bbf65ebf833efd864e2f954c794eea_1764184600.jpg",
+              "width": 3840,
+              "height": 2160
+             },
+             "preferred": {
+              "url": "if/f5/f5bbf65ebf833efd864e2f954c794eea_1764184600.jpg",
+              "width": 3840,
+              "height": 2160
+             }
+            },
+            "aspect_1x1": {
+             "default": {
+              "url": "if/0f/0f60c38b670b37fb9a0d86a523e8cac5_1764184592.jpg",
+              "width": 1920,
+              "height": 1920
+             },
+             "preferred": {
+              "url": "if/0f/0f60c38b670b37fb9a0d86a523e8cac5_1764184592.jpg",
+              "width": 1920,
+              "height": 1920
+             }
+            }
+           },
+           "logo": {
+            "aspect_1x1": {
+             "default": {
+              "url": "if/3d/3d14bcfc16d830298e7fa83a6a6854ad_1756126395.png",
+              "width": 180,
+              "height": 180
+             },
+             "preferred": {
+              "url": "if/3d/3d14bcfc16d830298e7fa83a6a6854ad_1756126395.png",
+              "width": 180,
+              "height": 180
+             }
+            },
+            "aspect_5x4": {
+             "default": {
+              "url": "if/cd/cdfc0a3b0dc23f628b1ed98d977da5a9_1756126396.png",
+              "width": 180,
+              "height": 144
+             },
+             "preferred": {
+              "url": "if/cd/cdfc0a3b0dc23f628b1ed98d977da5a9_1756126396.png",
+              "width": 180,
+              "height": 144
+             }
+            }
+           },
+           "polaris_hero_tile": {
+            "aspect_16x9": {
+             "default": {
+              "url": "if/9e/9e362574a7363bfeac6d3916a5a5919b_1756126392.jpg",
+              "width": 128,
+              "height": 72
+             },
+             "preferred": {
+              "url": "if/9e/9e362574a7363bfeac6d3916a5a5919b_1756126392.jpg",
+              "width": 128,
+              "height": 72
+             }
+            }
+           }
+          },
+          "texts": {
+           "title": {
+            "default": "Life with John Mayer"
+           },
+           "slug": {}
+          }
+         }
+        }
+       ]
+      }
+     }
+    ],
+    "id": "5mqCLZ21qAwnufKT8puUiM",
+    "actions": {},
+    "pagination": {
+     "url": "relationship/v1/set/all-channels?entityType=curated-grouping&entityId=403ab6a5-d3c9-4c2a-a722-a94a6a5fd056&containerId=3JoBfOCIwo6FmTpzM1S2H7",
+     "hits": 30,
+     "offset": 0,
+     "size": 30
+    },
+    "type": "SET",
+    "primaryItems": []
+   }
+  ]
+ }
+}

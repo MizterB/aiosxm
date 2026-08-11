@@ -1,0 +1,90 @@
+{
+ "delta": "2026-08-10T12:27:10.203173Z",
+ "channels": {
+  "f2f46a3e-7d4f-c900-ab8a-ca93489ca701": {
+   "cuts": [
+    {
+     "name": "@highwaysiriusxm",
+     "artistName": "Highway Mornings",
+     "validFrom": "2026-08-10T12:26:05.234Z",
+     "isAd": false,
+     "satMRefs": [
+      5406735
+     ]
+    }
+   ],
+   "shows": [
+    {
+     "name": "Highway Mornings with Cody Alan",
+     "validFrom": "2026-08-10T12:26:05.234Z",
+     "image": {
+      "width": 1920,
+      "height": 1920,
+      "url": "aem/3a/3a361c7f27fd3a6a12d42b89aea0c074_1731358475.jpeg"
+     }
+    }
+   ]
+  },
+  "2ea07147-a720-ed0c-d4ce-d7bddd1640d3": {
+   "cuts": [
+    {
+     "name": "80s on 8",
+     "artistName": "On SIriusXM",
+     "validFrom": "2026-08-10T12:25:48.324Z",
+     "isAd": false,
+     "satMRefs": [
+      131082
+     ]
+    },
+    {
+     "name": "Footloose (84)",
+     "artistName": "Kenny Loggins",
+     "validFrom": "2026-08-10T12:26:10.937Z",
+     "image": {
+      "width": 450,
+      "height": 450,
+      "url": "live/88/8866e596cedbd89dd626c44865c08bbc_1786363267.jpeg"
+     },
+     "isAd": false,
+     "satMRefs": [
+      131083
+     ]
+    }
+   ],
+   "shows": [
+    {
+     "name": "80s on 8 with Mark Goodman",
+     "validFrom": "2026-08-10T12:25:48.324Z",
+     "image": {
+      "width": 1920,
+      "height": 1920,
+      "url": "aem/48/487e65c1b8ffc85cd7828cc9b8c5934c_1707845375.jpeg"
+     }
+    }
+   ]
+  },
+  "31ebdfc0-dc1e-5ade-bc9c-6bb6dda1d46a": {
+   "cuts": [
+    {
+     "name": "San Jose Sharks",
+     "artistName": "San Jose Sharks",
+     "validFrom": "2026-08-10T04:00:00.800Z",
+     "isAd": false
+    }
+   ],
+   "shows": [
+    {
+     "name": "NHL: San Jose Sharks Hometown Play-by-Play",
+     "validFrom": "2026-08-10T04:00:00.800Z",
+     "image": {
+      "width": 1920,
+      "height": 1920,
+      "url": "aem/b2/b25fbcbb469675ba5dea02293d639c88_1700166459.png"
+     }
+    }
+   ],
+   "pxp": true
+  }
+ },
+ "events": {}
+}

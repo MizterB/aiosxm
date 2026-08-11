@@ -1,0 +1,141 @@
+{
+ "id": "194adbca-34d6-cb94-b153-3488ee563308",
+ "type": "channel-linear",
+ "images": {
+  "tile_background": {
+   "aspect_1x1": {
+    "preferredImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg"
+    },
+    "defaultImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "if/58/58700de7eb343850a3217b983769f5cb_1754038165.jpg"
+    },
+    "extraImages": null
+   },
+   "aspect_16x9": {
+    "preferredImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg"
+    },
+    "defaultImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/33/336f62416a6e300a8efdc5ff51cc3fc1_1754038167.jpg"
+    },
+    "extraImages": null
+   }
+  },
+  "tile": {
+   "aspect_16x9": {
+    "preferredImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png"
+    },
+    "defaultImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/bd/bd4af25fd0c230cdb785af764de9095f_1785726031.png"
+    },
+    "extraImages": null
+   },
+   "aspect_1x1": {
+    "preferredImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png"
+    },
+    "defaultImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "if/1f/1f26f86056883485b758e773da14635c_1785726039.png"
+    },
+    "extraImages": null
+   }
+  },
+  "logo": {
+   "aspect_5x4": {
+    "preferredImage": {
+     "width": 900,
+     "height": 720,
+     "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png"
+    },
+    "defaultImage": {
+     "width": 900,
+     "height": 720,
+     "url": "if/de/de9893434d40300f9737552bd28f01fa_1752761201.png"
+    },
+    "extraImages": null
+   },
+   "aspect_1x1": {
+    "preferredImage": {
+     "width": 720,
+     "height": 720,
+     "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png"
+    },
+    "defaultImage": {
+     "width": 720,
+     "height": 720,
+     "url": "if/03/0341831c1c3236f49ce10fe93b72725c_1752761203.png"
+    },
+    "extraImages": null
+   }
+  },
+  "hero_tile": {
+   "aspect_16x9": {
+    "preferredImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg"
+    },
+    "defaultImage": {
+     "width": 3840,
+     "height": 2160,
+     "url": "if/99/99c89a61621030e380fe9c2f035f95ee_1785781897.jpg"
+    },
+    "extraImages": null
+   },
+   "aspect_1x1": {
+    "preferredImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg"
+    },
+    "defaultImage": {
+     "width": 1920,
+     "height": 1920,
+     "url": "aem/7b/7bf3a461c9c7491fca7a7bef35ddcf52_1718308867.jpeg"
+    },
+    "extraImages": null
+   }
+  }
+ },
+ "skipLimits": {
+  "limited": {
+   "availableForwardSkips": 6,
+   "availableBackwardSkips": 1,
+   "moreSkipsAvailableTime": null
+  }
+ },
+ "streams": [
+  {
+   "id": "194adbca-34d6-cb94-b153-3488ee563308",
+   "urls": [
+    {
+     "name": "primary",
+     "url": "https://live-ftc-prod-device.streaming.siriusxm.com/v1/REDACTED_TOKEN/sec-1/AAC_Data/siriushits1/siriushits1_variant_full_v3.m3u8",
+     "isPrimary": true,
+     "validUntil": "2026-08-11T12:22:11Z",
+     "encryptionKeyId": "00000000-0000-0000-0000-000000000000"
+    }
+   ]
+  }
+ ],
+ "sequenceToken": null,
+ "playId": null
+}

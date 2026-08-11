@@ -1,0 +1,149 @@
+{
+ "page": {
+  "id": "403ab6a5-d3c9-4c2a-a722-a94a6a5fd056",
+  "entity": {
+   "texts": {
+    "title": {
+     "default": "All channels",
+     "long": "All channels",
+     "medium": "All channels",
+     "short": "All"
+    },
+    "description": {}
+   },
+   "images": {
+    "tile": {
+     "aspect_16x9": {
+      "default": {
+       "width": 3840,
+       "height": 2160,
+       "url": "aem/8f/8fa05f8638157271f42078fd275940bb_1702316091.jpeg"
+      },
+      "preferred": {
+       "width": 3840,
+       "height": 2160,
+       "url": "aem/8f/8fa05f8638157271f42078fd275940bb_1702316091.jpeg"
+      }
+     },
+     "aspect_1x1": {
+      "default": {
+       "width": 1920,
+       "height": 1920,
+       "url": "aem/80/8001855de2a0cc185eff54e51daa8dbd_1702316085.jpeg"
+      },
+      "preferred": {
+       "width": 1920,
+       "height": 1920,
+       "url": "aem/80/8001855de2a0cc185eff54e51daa8dbd_1702316085.jpeg"
+      }
+     }
+    },
+    "tile_circle": {
+     "aspect_1x1": {
+      "default": {
+       "width": 1920,
+       "height": 1920,
+       "url": "aem/a6/a613c86d10fe09d5c45da5f99b499e5a_1702316078.png"
+      },
+      "preferred": {
+       "width": 1920,
+       "height": 1920,
+       "url": "aem/a6/a613c86d10fe09d5c45da5f99b499e5a_1702316078.png"
+      }
+     }
+    }
+   },
+   "type": "curated-grouping",
+   "id": "403ab6a5-d3c9-4c2a-a722-a94a6a5fd056"
+  },
+  "containers": [
+   {
+    "url": "relationship/v1/container?locale=en-US&offset=0&containerId=1JmCb3GofdJ3kZSsEWfVmg&supportedMediaType=AUDIO&supportedMediaType=VIDEO&setStyle=small_list&unentitledContent=lock&preferredImageVariant=default&setResponseStructure=default",
+    "id": "1JmCb3GofdJ3kZSsEWfVmg",
+    "style": {
+     "name": "small_list"
+    }
+   },
+   {
+    "url": "relationship/v1/container/all-channels?entityId=403ab6a5-d3c9-4c2a-a722-a94a6a5fd056&maxResponses=30&locale=en-US&offset=0&entityType=curated-grouping&containerId=3JoBfOCIwo6FmTpzM1S2H7&useCuratedContext=false&supportedMediaType=AUDIO&supportedMediaType=VIDEO&setStyle=small_list&unentitledContent=lock&preferredImageVariant=default&setResponseStructure=default",
+    "id": "3JoBfOCIwo6FmTpzM1S2H7",
+    "style": {
+     "name": "small_list"
+    }
+   }
+  ],
+  "decorations": {
+   "connectivity": "ip",
+   "contentTypeLabel": "COLLECTION",
+   "similarArtists": [],
+   "hexcode": {
+    "default": "#F0F8FF",
+    "light": "#F0F8FF",
+    "dark": "#F0F8FF"
+   },
+   "unentitled": false
+  },
+  "actions": {
+   "shareLink": [
+    {
+     "entity": {
+      "images": {
+       "tile": {
+        "aspect_16x9": {
+         "default": {
+          "width": 3840,
+          "height": 2160,
+          "url": "aem/8f/8fa05f8638157271f42078fd275940bb_1702316091.jpeg"
+         },
+         "preferred": {
+          "width": 3840,
+          "height": 2160,
+          "url": "aem/8f/8fa05f8638157271f42078fd275940bb_1702316091.jpeg"
+         }
+        },
+        "aspect_1x1": {
+         "default": {
+          "width": 1920,
+          "height": 1920,
+          "url": "aem/80/8001855de2a0cc185eff54e51daa8dbd_1702316085.jpeg"
+         },
+         "preferred": {
+          "width": 1920,
+          "height": 1920,
+          "url": "aem/80/8001855de2a0cc185eff54e51daa8dbd_1702316085.jpeg"
+         }
+        }
+       },
+       "tile_circle": {
+        "aspect_1x1": {
+         "default": {
+          "width": 1920,
+          "height": 1920,
+          "url": "aem/a6/a613c86d10fe09d5c45da5f99b499e5a_1702316078.png"
+         },
+         "preferred": {
+          "width": 1920,
+          "height": 1920,
+          "url": "aem/a6/a613c86d10fe09d5c45da5f99b499e5a_1702316078.png"
+         }
+        }
+       }
+      },
+      "type": "curated-grouping",
+      "id": "403ab6a5-d3c9-4c2a-a722-a94a6a5fd056",
+      "texts": {
+       "title": {
+        "default": "All channels"
+       },
+       "slug": {
+        "default": "all-channels"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "style": "default",
+  "pageVariant": "default"
+ }
+}
