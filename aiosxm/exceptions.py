@@ -43,3 +43,16 @@ class NotEntitledError(SxmError):
         """Initialize the exception."""
         super().__init__(message)
         self.original_exception = original_exception
+
+
+class SkipNotAllowedError(SxmError):
+    """The account has used up its rationed skips for now.
+
+    `more_skips_at` is the ISO-8601 time the allowance refills, when the API
+    tells us; a caller can surface that rather than a bare failure.
+    """
+
+    def __init__(self, message: str, *, more_skips_at: str | None = None) -> None:
+        """Initialize the exception."""
+        super().__init__(message)
+        self.more_skips_at = more_skips_at

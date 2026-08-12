@@ -9,13 +9,18 @@ from typing import TYPE_CHECKING, Any
 from urllib.parse import urljoin
 
 from aiosxm.const import API_BASE, BITRATE_256, BITRATES, STREAM_EXPIRY_MARGIN
-from aiosxm.models import Track
+from aiosxm.exceptions import SkipNotAllowedError
+from aiosxm.models import SkipLimits, Track
 
 if TYPE_CHECKING:
     from aiosxm.client import SxmClient
 
 # Linear channels use a fixed all-zero key id; on-demand content is keyed per stream.
 LINEAR_KEY_ID = "00000000-0000-0000-0000-000000000000"
+
+# Entity types that hand back a queue of discrete tracks rather than one
+# continuous stream. Each entry in `streams` is a separate song.
+TRACK_QUEUE_TYPES = frozenset({"artist-station", "channel-xtra"})
 
 _KEY_URI_RE = re.compile(r'(#EXT-X-KEY:[^\n]*?URI=")([^"]+)(")')
 
@@ -86,6 +91,8 @@ class SxmStream:
         self._tune_source: dict | None = None
         self._streams_by_bitrate: dict[str, str | None] = {}
         self._variants: list[str] = []
+        # Resolved variant playlists per queued track, keyed (track_id, bitrate).
+        self._track_variants: dict[tuple[str, str], str] = {}
 
     async def initialize(self) -> None:
         """Initialize the stream."""
@@ -122,10 +129,14 @@ class SxmStream:
     async def next_tracks(self) -> list[Track]:
         """Fetch the next batch of tracks, continuing the queue.
 
-        Artist stations hand back three tracks at a time along with a
-        `sequenceToken` that acts as a cursor. Feeding it back returns the next
-        three, so a consumer can keep pulling indefinitely — the queue does not
-        appear to terminate.
+        Artist stations and Xtra channels hand back three tracks at a time along
+        with a `sequenceToken` that acts as a cursor. Feeding it back returns the
+        next three, so a consumer can keep pulling indefinitely — the queue does
+        not appear to terminate.
+
+        Note the cursor tracks the *source*, not the position in the batch: the
+        first entry of the new batch is usually the track that was already
+        playing, so callers should de-duplicate by track id (`iter_tracks` does).
 
         Returns an empty list for anything that isn't a track queue, or when the
         API stops issuing a cursor.
@@ -163,16 +174,16 @@ class SxmStream:
     def is_track_queue(self) -> bool:
         """Whether this is a queue of discrete tracks rather than one stream.
 
-        Artist stations return one stream per upcoming track, each a separate
-        media file. This keys off the entity type rather than the stream count:
-        `channel-xtra` also returns several streams, but those are HLS mirrors of
-        one continuous broadcast, not a queue.
+        Both artist stations and Xtra channels return one stream per upcoming
+        track, each a separate media file with its own metadata and encryption
+        key. Neither is a continuous broadcast, so a caller has to play the
+        queue itself and refill it as it drains.
         """
-        return self.entity_type == "artist-station"
+        return self.entity_type in TRACK_QUEUE_TYPES
 
     @property
     def tracks(self) -> list[Track]:
-        """The queued tracks, for an artist station.
+        """The queued tracks, for an artist station or Xtra channel.
 
         Empty for anything that isn't a track queue.
         """
@@ -180,7 +191,11 @@ class SxmStream:
             return []
         tracks: list[Track] = []
         for stream in self._source.get("streams", []):
-            items = ((stream.get("metadata") or {}).get("artist") or {}).get("items") or []
+            # The per-track payload hangs off a key named for the source:
+            # `artist` for artist stations, `xtra` for Xtra channels.
+            metadata = stream.get("metadata") or {}
+            source_meta = metadata.get("artist") or metadata.get("xtra") or {}
+            items = source_meta.get("items") or []
             item = items[0] if items else {}
             url = next(
                 (u.get("url") for u in stream.get("urls", []) if u.get("isPrimary")),
@@ -202,6 +217,10 @@ class SxmStream:
                         break
                 if image_key:
                     break
+            key_id = next(
+                (u.get("encryptionKeyId") for u in stream.get("urls", []) if u.get("encryptionKeyId")),
+                None,
+            )
             tracks.append(
                 Track(
                     id=stream.get("id") or item.get("id") or "",
@@ -211,9 +230,60 @@ class SxmStream:
                     duration_ms=item.get("duration"),
                     url=url,
                     image_key=image_key,
+                    # Only the in-progress track carries an offset; queued
+                    # tracks start at zero.
+                    start_offset_ms=source_meta.get("startOffset") or 0,
+                    encryption_key_id=key_id,
                 ),
             )
         return tracks
+
+    @property
+    def skip_limits(self) -> SkipLimits:
+        """How many skips remain on this stream, as of the last tune."""
+        return SkipLimits.from_payload((self._tune_source or {}).get("skipLimits"))
+
+    async def skip(self, *, forward: bool = True) -> SkipLimits:
+        """Register a user skip and return the updated allowance.
+
+        This spends one of the account's rationed skips; it does not by itself
+        change the track. Advance the queue with `next_tracks`/`iter_tracks`.
+
+        Raises `SkipNotAllowedError` when the allowance is exhausted, so a
+        caller can show `more_skips_at` instead of silently doing nothing.
+        """
+        limits = self.skip_limits
+        allowed = limits.can_skip_forward if forward else limits.can_skip_backward
+        if not allowed:
+            direction = "forward" if forward else "backward"
+            message = f"No {direction} skips remaining"
+            raise SkipNotAllowedError(message, more_skips_at=limits.more_skips_at)
+        resp = await self._client.request(
+            method="POST",
+            url=f"{API_BASE}/playback/play/v1/skip",
+            json={
+                "id": self.entity_id,
+                "type": self.entity_type,
+                "sequenceToken": self._source.get("sequenceToken"),
+                "direction": "forward" if forward else "backward",
+            },
+        )
+        updated = SkipLimits.from_payload(resp)
+        # Keep the cached tune payload in step so skip_limits stays accurate
+        # without forcing a re-tune.
+        if self._tune_source is None:
+            self._tune_source = {}
+        self._tune_source["skipLimits"] = {
+            "limited": {
+                "availableForwardSkips": updated.forward,
+                "availableBackwardSkips": updated.backward,
+                "moreSkipsAvailableTime": updated.more_skips_at,
+            },
+        }
+        if not resp.get("skipAllowed", True):
+            message = "SiriusXM refused the skip"
+            raise SkipNotAllowedError(message, more_skips_at=updated.more_skips_at)
+        return updated
 
     @property
     def is_progressive(self) -> bool:
@@ -406,6 +476,73 @@ class SxmStream:
                 lines.append(line)
         return "\n".join(lines) + "\n"
 
+    async def get_track_playlist(self, track: Track, key_url: str, bitrate: str = BITRATE_256) -> str:
+        """Get one queued track's media playlist, with the key URI rewritten.
+
+        Queued tracks each carry their own master playlist and encryption key.
+        A track cannot be tuned on its own — it only exists inside its parent's
+        tune response — so this resolves the variant from the track's own url.
+
+        :param track: A track from this stream's queue.
+        :param key_url: The URI to point `EXT-X-KEY` at.
+        :param bitrate: Preferred bitrate; the closest available is used.
+        """
+        variant_url = await self._track_variant_url(track, bitrate)
+        playlist = await self._client.request(method="GET", url=variant_url)
+        lines = []
+        for line in str(playlist).splitlines():
+            if line.startswith("#EXT-X-KEY"):
+                lines.append(_KEY_URI_RE.sub(rf"\g<1>{key_url}\g<3>", line))
+            elif line and not line.startswith("#"):
+                lines.append(line.strip().rsplit("/", 1)[-1])
+            else:
+                lines.append(line)
+        return "\n".join(lines) + "\n"
+
+    async def get_track_key(self, track: Track) -> bytes:
+        """Get the raw AES-128 key for one queued track."""
+        key_id = track.encryption_key_id or track.id
+        resp = await self._client.request(
+            method="GET",
+            url=f"{API_BASE}/playback/key/v1/{key_id}",
+        )
+        return base64.b64decode(resp["key"])
+
+    async def get_track_segment(self, track: Track, segment_file: str, bitrate: str = BITRATE_256) -> bytes:
+        """Get one segment of a queued track."""
+        variant_url = await self._track_variant_url(track, bitrate)
+        base = variant_url.rsplit("/", 1)[0] + "/"
+        return await self._client.request(method="GET", url=urljoin(base, segment_file))
+
+    async def _track_variant_url(self, track: Track, bitrate: str = BITRATE_256) -> str:
+        """Resolve a queued track's master playlist to a bitrate variant."""
+        if not track.url:
+            message = f"Track {track.id} has no playable url"
+            raise ValueError(message)
+        cached = self._track_variants.get((track.id, bitrate))
+        if cached:
+            return cached
+        master = await self._client.request(method="GET", url=track.url)
+        # Resolve against the track's own master playlist, not the stream's:
+        # each queued track lives under its own CDN path, so reusing the
+        # channel's base would build a url pointing at another track's clip.
+        base = track.url.split("?")[0].rsplit("/", 1)[0]
+        variants: dict[str, str] = {}
+        for raw_line in str(master).splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            for known in BITRATES:
+                if f"_{known}_" in line:
+                    variants[known] = f"{base}/{line}"
+                    break
+        chosen = variants.get(bitrate) or next((variants[b] for b in BITRATES if variants.get(b)), None)
+        if not chosen:
+            message = f"No playlist available for track {track.id}"
+            raise ValueError(message)
+        self._track_variants[track.id, bitrate] = chosen
+        return chosen
+
     def bitrate_for_segment(self, segment_file: str, default: str = BITRATE_256) -> str:
         """Work out which bitrate a segment belongs to from its filename.
 
@@ -445,6 +582,12 @@ class SxmStream:
         match = _KEY_URI_RE.search(playlist)
         if match:
             return match.group(2)
-        # Nothing in the playlist; fall back to the historical derivation.
-        key_id = LINEAR_KEY_ID if self.entity_type == "channel-linear" else self.stream_id
+        # Nothing in the playlist; fall back to a derivation. Prefer the id the
+        # tune response gave us, which is authoritative for per-track keys.
+        key_id = next(
+            (u.get("encryptionKeyId") for u in self._source.get("urls", []) if u.get("encryptionKeyId")),
+            None,
+        )
+        if not key_id:
+            key_id = LINEAR_KEY_ID if self.entity_type == "channel-linear" else self.stream_id
         return f"{API_BASE}/playback/key/v1/{key_id}"

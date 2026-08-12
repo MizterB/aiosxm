@@ -83,8 +83,51 @@ class Image:
 
 
 @dataclass(slots=True)
+class SkipLimits:
+    """How many skips the account has left on the current stream.
+
+    SiriusXM rations skips per hour, the same way broadcast-licensed radio
+    services generally must. A client should check `can_skip_forward` before
+    offering a next-track control, and surface `more_skips_at` when it is
+    exhausted rather than letting the skip fail.
+    """
+
+    forward: int = 0
+    backward: int = 0
+    # ISO-8601 timestamp at which the allowance refills, when exhausted.
+    more_skips_at: str | None = None
+
+    @property
+    def can_skip_forward(self) -> bool:
+        """Whether a forward skip is currently allowed."""
+        return self.forward > 0
+
+    @property
+    def can_skip_backward(self) -> bool:
+        """Whether a backward skip is currently allowed."""
+        return self.backward > 0
+
+    @classmethod
+    def from_payload(cls, payload: dict | None) -> Self:
+        """Build from a tuneSource `skipLimits` block, or a skip response.
+
+        Both spell the counts the same way; tuneSource nests them under
+        `limited`, while the skip endpoint returns them at the top level.
+        """
+        data = payload or {}
+        limited = data.get("limited")
+        if isinstance(limited, dict):
+            data = limited
+        return cls(
+            forward=data.get("availableForwardSkips") or 0,
+            backward=data.get("availableBackwardSkips") or 0,
+            more_skips_at=data.get("moreSkipsAvailableTime"),
+        )
+
+
+@dataclass(slots=True)
 class Track:
-    """One track from an artist station's queue."""
+    """One track from an artist station's or Xtra channel's queue."""
 
     id: str
     title: str
@@ -93,11 +136,21 @@ class Track:
     duration_ms: int | None = None
     url: str | None = None
     image_key: str | None = None
+    # Where to start playing. Non-zero only for the track already in progress
+    # when a channel is tuned mid-song.
+    start_offset_ms: int = 0
+    # Each queued track is encrypted under its own key.
+    encryption_key_id: str | None = None
 
     @property
     def duration(self) -> float | None:
         """Duration in seconds."""
         return self.duration_ms / 1000 if self.duration_ms else None
+
+    @property
+    def start_offset(self) -> float:
+        """Start offset in seconds."""
+        return self.start_offset_ms / 1000 if self.start_offset_ms else 0.0
 
     def image_url(self, width: int = 300, height: int = 300) -> str | None:
         """Album art for this track."""

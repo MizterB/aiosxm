@@ -7,6 +7,7 @@ from aiosxm.exceptions import (
     AuthenticationError,
     NotEntitledError,
     RequestError,
+    SkipNotAllowedError,
     SxmError,
 )
 from aiosxm.models import (
@@ -19,6 +20,7 @@ from aiosxm.models import (
     NowPlaying,
     SearchResults,
     Show,
+    SkipLimits,
     Talent,
     Track,
 )
@@ -42,6 +44,8 @@ __all__ = [
     "RequestError",
     "SearchResults",
     "Show",
+    "SkipLimits",
+    "SkipNotAllowedError",
     "SxmClient",
     "SxmError",
     "SxmStream",

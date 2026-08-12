@@ -597,6 +597,71 @@ def _serialize_track(track: Track) -> dict:
     }
 
 
+async def _find_track(stream, track_id: str):  # noqa: ANN001, ANN202
+    """Locate a queued track by id, walking the queue if it isn't in the first batch.
+
+    Each request re-tunes, and a tune returns only the next few tracks, so a
+    track a client queued earlier will usually not be in the opening batch.
+    """
+    async for track in stream.iter_tracks(limit=MAX_QUEUE_TRACKS):
+        if track.id == track_id:
+            return track
+    return None
+
+
+@router.get("/stream/{entity_type}/{entity_id}/track/{track_id}/playlist.m3u8")
+async def get_track_playlist(request: web.Request) -> web.Response:
+    """Get one queued track's playlist, with the key URI pointed back here.
+
+    Xtra tracks are encrypted HLS, and the key needs the session's Authorization
+    header, which ordinary players won't send. They also can't be tuned on their
+    own — a track only exists inside its channel's tune response — so the track
+    is located by id within the queue and its playlist rewritten here.
+    """
+    stream = await _get_stream(request)
+    if not stream.is_track_queue:
+        raise web.HTTPBadRequest(text="This entity is not a track queue")
+
+    track_id = request.match_info["track_id"]
+    track = await _find_track(stream, track_id)
+    if track is None or not track.url:
+        raise web.HTTPNotFound(text=f"Track {track_id} is not in this queue")
+
+    if not track.url.split("?")[0].endswith(".m3u8"):
+        # Artist-station tracks are plain media files; nothing to rewrite.
+        raise web.HTTPFound(track.url)
+
+    entity_type = request.match_info["entity_type"]
+    entity_id = request.match_info["entity_id"]
+    key_url = f"/stream/{entity_type}/{entity_id}/track/{track_id}/key"
+    playlist = await stream.get_track_playlist(track, key_url, _bitrate(request))
+    return web.Response(body=playlist.encode(), content_type="application/vnd.apple.mpegurl")
+
+
+@router.get("/stream/{entity_type}/{entity_id}/track/{track_id}/key")
+async def get_track_key(request: web.Request) -> web.Response:
+    """Get the decryption key for one queued track."""
+    stream = await _get_stream(request)
+    track_id = request.match_info["track_id"]
+    track = await _find_track(stream, track_id)
+    if track is None:
+        raise web.HTTPNotFound(text=f"Track {track_id} is not in this queue")
+    key = await stream.get_track_key(track)
+    return _ranged_response(request, key, "application/octet-stream")
+
+
+@router.get("/stream/{entity_type}/{entity_id}/track/{track_id}/{segment_file:.+\\.aac}")
+async def get_track_segment(request: web.Request) -> web.Response:
+    """Get a segment of one queued track."""
+    stream = await _get_stream(request)
+    track_id = request.match_info["track_id"]
+    track = await _find_track(stream, track_id)
+    if track is None or not track.url:
+        raise web.HTTPNotFound(text=f"Track {track_id} is not in this queue")
+    segment = await stream.get_track_segment(track, request.match_info["segment_file"])
+    return _ranged_response(request, segment, "audio/aac")
+
+
 @router.get("/stream/{entity_type}/{entity_id}/tracks")
 async def get_tracks(request: web.Request) -> web.Response:
     """Get queued tracks for an artist station.

@@ -6,7 +6,7 @@ from collections.abc import AsyncGenerator
 import pytest
 from aioresponses import aioresponses
 
-from aiosxm import SxmClient, SxmStream
+from aiosxm import SkipNotAllowedError, SxmClient, SxmStream
 from aiosxm.const import API_BASE, BITRATE_32, BITRATE_96, BITRATE_256
 from tests.conftest import mock_auth
 
@@ -345,26 +345,93 @@ class TestArtistStations:
         assert stream.tracks == []
 
 
-class TestMultiStreamChannels:
-    """Several streams does not mean a track queue."""
+class TestXtraChannels:
+    """Xtra channels are a queue of discrete tracks, not one broadcast."""
 
-    async def test_xtra_channel_with_mirrors_is_still_hls(self) -> None:
-        # channel-xtra returns multiple streams that are HLS mirrors of one
-        # broadcast; treating them as a queue broke bitrate discovery.
-        mirrored = {
+    @staticmethod
+    def _xtra_page() -> dict:
+        """A tuneSource page shaped like the real channel-xtra response.
+
+        Each entry in `streams` is a different song with its own url, key id and
+        `metadata.xtra.items`. Only the in-progress track carries a startOffset.
+        """
+        return {
             "type": "channel-xtra",
-            "streams": [{"id": f"s{i}", "urls": [{"url": MASTER_URL}]} for i in range(3)],
+            "streams": [
+                {
+                    "id": f"track{i}",
+                    "urls": [
+                        {
+                            "name": "primary",
+                            "url": f"https://cdn.example.com/clips/chan/track{i}/audio/track{i}_variant_full_v3.m3u8",
+                            "isPrimary": True,
+                            "encryptionKeyId": f"key{i}",
+                        },
+                    ],
+                    "metadata": {
+                        "xtra": {
+                            "startOffset": 23093 if i == 0 else 0,
+                            "channelName": "Perfectly Frank",
+                            "items": [
+                                {
+                                    "id": f"track{i}",
+                                    "type": "xtra-channel-track",
+                                    "name": f"Song {i}",
+                                    "artistName": "Frank Sinatra",
+                                    "duration": 210267,
+                                },
+                            ],
+                        },
+                    },
+                }
+                for i in range(3)
+            ],
         }
+
+    async def _xtra(self) -> tuple[SxmClient, SxmStream]:
         client = SxmClient("u", "p")
         with aioresponses() as mocked:
             mock_auth(mocked)
             await client.connect()
-            mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=mirrored)
-            mocked.get(MASTER_URL, body=MASTER, content_type="application/x-mpegurl")
+            mocked.post(f"{API_BASE}/playback/play/v1/tuneSource", payload=self._xtra_page())
             stream = await client.get_stream("channel-xtra", "x1")
+        return client, stream
 
-        assert stream.is_track_queue is False
-        assert stream.available_bitrates, "bitrates must still be discovered"
+    async def test_xtra_is_a_track_queue(self) -> None:
+        client, stream = await self._xtra()
+        assert stream.is_track_queue is True
+        assert stream.is_progressive is False
+        await client.close()
+
+    async def test_every_stream_becomes_a_track(self) -> None:
+        # Reading only streams[0] made an Xtra channel look like one finite
+        # track that repeats; all three are separate songs.
+        client, stream = await self._xtra()
+        tracks = stream.tracks
+        assert [t.title for t in tracks] == ["Song 0", "Song 1", "Song 2"]
+        assert all(t.artist == "Frank Sinatra" for t in tracks)
+        assert all(t.url for t in tracks)
+        await client.close()
+
+    async def test_start_offset_only_on_the_track_in_progress(self) -> None:
+        client, stream = await self._xtra()
+        tracks = stream.tracks
+        assert tracks[0].start_offset_ms == 23093
+        assert tracks[0].start_offset == pytest.approx(23.093)
+        assert [t.start_offset_ms for t in tracks[1:]] == [0, 0]
+        await client.close()
+
+    async def test_each_track_carries_its_own_key_id(self) -> None:
+        # The key endpoint is keyed on the track, not the channel.
+        client, stream = await self._xtra()
+        assert [t.encryption_key_id for t in stream.tracks] == ["key0", "key1", "key2"]
+        await client.close()
+
+    async def test_playlist_url_refuses(self) -> None:
+        # A queue has no single continuous playlist; callers use tracks.
+        client, stream = await self._xtra()
+        with pytest.raises(ValueError, match="queue of tracks"):
+            stream.playlist_url()
         await client.close()
 
 
@@ -613,4 +680,90 @@ class TestSignedUrlExpiry:
         assert "#EXTM3U" in playlist
         # The re-tune replaced the stale source with the fresh one.
         assert stream.master_playlist_url == MASTER_URL
+        await client.close()
+
+
+class TestSkipLimits:
+    """Skips are rationed, so a client has to know what it has left."""
+
+    @staticmethod
+    def _page(forward: int, backward: int, more_at: str | None = None) -> dict:
+        return {
+            "type": "artist-station",
+            "skipLimits": {
+                "limited": {
+                    "availableForwardSkips": forward,
+                    "availableBackwardSkips": backward,
+                    "moreSkipsAvailableTime": more_at,
+                },
+            },
+            "streams": [
+                {
+                    "id": "t0",
+                    "urls": [{"url": "https://cdn.example.com/t0.m3u8", "isPrimary": True}],
+                    "metadata": {"artist": {"items": [{"name": "Song", "artistName": "A"}]}},
+                },
+            ],
+            "sequenceToken": "cursor",
+        }
+
+    async def _stream(self, forward: int, backward: int, more_at: str | None = None) -> tuple[SxmClient, SxmStream]:
+        client = SxmClient("u", "p")
+        with aioresponses() as mocked:
+            mock_auth(mocked)
+            await client.connect()
+            mocked.post(
+                f"{API_BASE}/playback/play/v1/tuneSource",
+                payload=self._page(forward, backward, more_at),
+            )
+            stream = await client.get_stream("artist-station", "s1")
+        return client, stream
+
+    async def test_limits_are_exposed(self) -> None:
+        client, stream = await self._stream(6, 1)
+        limits = stream.skip_limits
+        assert limits.forward == 6
+        assert limits.backward == 1
+        assert limits.can_skip_forward is True
+        assert limits.can_skip_backward is True
+        await client.close()
+
+    async def test_exhausted_limits_report_when_they_refill(self) -> None:
+        client, stream = await self._stream(0, 0, "2026-08-11T14:46:40Z")
+        limits = stream.skip_limits
+        assert limits.can_skip_forward is False
+        assert limits.more_skips_at == "2026-08-11T14:46:40Z"
+        await client.close()
+
+    async def test_skip_spends_one_and_updates_the_allowance(self) -> None:
+        client, stream = await self._stream(6, 1)
+        with aioresponses() as mocked:
+            mocked.post(
+                f"{API_BASE}/playback/play/v1/skip",
+                payload={
+                    "skipAllowed": True,
+                    "availableForwardSkips": 5,
+                    "availableBackwardSkips": 1,
+                    "moreSkipsAvailableTime": None,
+                },
+            )
+            updated = await stream.skip()
+        assert updated.forward == 5
+        # The cached tune payload is kept in step, so no re-tune is needed.
+        assert stream.skip_limits.forward == 5
+        await client.close()
+
+    async def test_skip_refuses_when_exhausted_without_calling_the_api(self) -> None:
+        client, stream = await self._stream(0, 0, "2026-08-11T14:46:40Z")
+        # No mocked endpoint: a request here would raise a connection error
+        # instead of the expected refusal.
+        with pytest.raises(SkipNotAllowedError) as err:
+            await stream.skip()
+        assert err.value.more_skips_at == "2026-08-11T14:46:40Z"
+        await client.close()
+
+    async def test_backward_skip_checks_its_own_allowance(self) -> None:
+        client, stream = await self._stream(6, 0)
+        with pytest.raises(SkipNotAllowedError):
+            await stream.skip(forward=False)
         await client.close()
